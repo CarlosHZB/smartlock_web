@@ -61,7 +61,7 @@ export default function HomeLogged() {
         <UserInfoContainer>
             <BiUserCircle size={35}/>
             <UserInfo>
-                <UserName>Gabriel Palmyro</UserName>
+                <UserName>Carlos Braga</UserName>
                 <UserId>BI3040031</UserId>
             </UserInfo>
         </UserInfoContainer>

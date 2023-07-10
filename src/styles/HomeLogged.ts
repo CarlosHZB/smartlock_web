@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const HomeLoggedContainer = styled.div`
-    width: 100%;
     height: 100vh;
     flex-direction: row;
     display: flex;
