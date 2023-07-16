@@ -39,7 +39,7 @@ export const Squares = styled.div<SquareProps>`
    background-color: ${(props) => props.color};
    height: 35px;
    width: 35px;
-   border-radius: 7px;
+   border-radius: 5px;
    border: none;
 `
 
