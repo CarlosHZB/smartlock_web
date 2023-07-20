@@ -126,7 +126,7 @@ interface RoomSquareProps {
     color: string;
 }
 
-export const RoomsSquares = styled.div<RoomSquareProps>`
+export const RoomsSquares = styled.button<RoomSquareProps>`
    display: flex;
    margin-left: 1.2rem;
    background-color: ${(props) => props.color};
@@ -140,4 +140,20 @@ export const RoomsSquares = styled.div<RoomSquareProps>`
    font-family: 'Montserrat';
    font-size: 12px;
    font-weight: 700;
+   cursor: pointer;
 `
+
+export const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 38%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
