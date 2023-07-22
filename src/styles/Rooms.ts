@@ -120,6 +120,7 @@ export const WrapRooms = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 100%;
 `
 
 interface RoomSquareProps {
@@ -145,15 +146,150 @@ export const RoomsSquares = styled.button<RoomSquareProps>`
 
 export const Overlay = styled.div`
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 80px;
+    right: 50px;
     width: 38%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 999;
+    /* background-color: rgba(0, 0, 0, 0.8); */
+    background-color: #D2D9DE;
+    /* z-index: 999; */
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
 `
 
+export const OverlayMenu = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 85px;
+    margin-left: 30px;
+    width: 90%;
+    height: 70%;
+    background-color: #F2F8FD;
+    border-radius: 10px;
+`
+
+export const FirstRowOverlay = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    width: 95%;
+`
+
+export const DisposeButton = styled.button`
+    border: none;
+    background-color: transparent;
+    margin-left: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+`
+
+interface OpenOrClosedTagProps {
+    color: string;
+}
+
+export const OpenOrClosedTag = styled.span<OpenOrClosedTagProps>`
+    display: flex;
+    background-color: ${(props) => props.color};
+    color: white;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 2px 8px; 
+    width: 50px; 
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: 100;
+`
+
+export const OverlayTitle = styled.h1`
+    padding-left: 18px;
+    font-family: 'Montserrat';
+    font-size: 30px;
+    font-weight: 700;
+    color: #263238;
+`
+
+export const SecondRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+`
+
+export const InformationColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+`
+
+export const ClassAtMoment = styled.h1`
+    font-family: 'Montserrat';
+    font-size: 15px;
+    font-weight: 100;
+    color: #2A567966;
+`
+
+export const ClassName = styled.h1`
+    margin-top: 0;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    font-weight: 500;
+    color: #2A5679;
+`
+
+export const NextCLassesTitle = styled.h1`
+    padding-top: 2px;
+    margin-left: 20px;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    font-weight: 500;
+    color: #263238;
+`
+
+export const ClassesDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 25px;
+    margin-bottom: 7px;
+    background-color: #F2F8FD;
+    border: 1px solid #2A567999;
+    border-radius: 5px;
+    height: 35px;
+    width: 90%;
+`
+
+export const ClassTitle = styled.h1`
+    margin-left: 12px;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    font-weight: 500;
+    color: #2A5679;
+`
+
+export const DateTimeColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-right: 12px;
+`
+
+export const DateStyle = styled.h1`
+    margin-bottom: 0;
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: 100;
+    color: #2A567999;
+`
+
+export const TimeStyle = styled.h1`
+    margin-top: 0;
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: 700;
+    color: #2A567999;
+` 

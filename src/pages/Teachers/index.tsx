@@ -18,19 +18,19 @@ export default function Teachers(){
             <TableRow>
                 <TableRowContent>Murilo Varges</TableRowContent>
                 <TableRowContent>murilovarges@gmail.com</TableRowContent>
-                <TableRowContent>Opa</TableRowContent>
+                <TableRowContent>X</TableRowContent>
                 <TableRowContent>BI300XXXX</TableRowContent>
             </TableRow>
             <TableRow>
                 <TableRowContent>Murilo Varges</TableRowContent>
                 <TableRowContent>murilovarges@gmail.com</TableRowContent>
-                <TableRowContent>Opa</TableRowContent>
+                <TableRowContent>X</TableRowContent>
                 <TableRowContent>BI300XXXX</TableRowContent>
             </TableRow>
             <TableRow>
                 <TableRowContent>Murilo Varges</TableRowContent>
                 <TableRowContent>murilovarges@gmail.com</TableRowContent>
-                <TableRowContent>Opa</TableRowContent>
+                <TableRowContent>X</TableRowContent>
                 <TableRowContent>BI300XXXX</TableRowContent>
             </TableRow>
         </TeacherContainer>
