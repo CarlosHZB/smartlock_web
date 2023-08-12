@@ -146,7 +146,7 @@ export const RoomsSquares = styled.button<RoomSquareProps>`
 
 export const Overlay = styled.div`
     position: fixed;
-    top: 80px;
+    top: 90px;
     right: 50px;
     width: 38%;
     height: 100%;
