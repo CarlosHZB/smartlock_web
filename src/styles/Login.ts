@@ -62,6 +62,16 @@ export const InputInfo = styled.p`
     color: rgba(42, 86, 121, 0.8);
 `
 
+export const HideButton = styled.img`
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width:30px;
+    height:30px;
+    /* padding-left: 670px; */
+`
+
 export const LoginInput = styled.input`
     width: 94%;
     padding: 15px;
@@ -74,6 +84,10 @@ export const LoginInput = styled.input`
     color: #2A5679;
 `
 
+export const InputButtonDiv = styled.div`
+    position: relative;
+    width: 100%;
+`
 
 export const LoginButtonEnter = styled.button`
     width: 100%;

@@ -1,29 +1,102 @@
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HOMELOGGED, REGISTER } from "../../core/app-urls";
-import { FormContainer, HomeContainer, InputInfo, LeftBlock, LoginButtonEnter, LoginButtonNew, LoginForgot, LoginForm, LoginImg, LoginInput, LoginSubText, LoginTitle } from "../../styles/Login";
+import {
+  FormContainer,
+  HideButton,
+  HomeContainer,
+  InputButtonDiv,
+  InputInfo,
+  LeftBlock,
+  LoginButtonEnter,
+  LoginButtonNew,
+  LoginForgot,
+  LoginForm,
+  LoginImg,
+  LoginInput,
+  LoginSubText,
+  LoginTitle,
+} from "../../styles/Login";
 import LOGINIMG from "../../assets/img/loginImg.png";
+import { api } from "../../services/api";
+import showPasswordImg from "../../assets/img/hide.svg";
+import hidePasswordImg from "../../assets/img/show.svg";
 
-export default function Login(){
-    const history = useNavigate()
-    return(
-        <HomeContainer>
-            <LeftBlock>
-                <LoginImg src={LOGINIMG} alt=""></LoginImg>
-            </LeftBlock>
-            <LoginForm>
-                <LoginTitle>Bem vindo(a),</LoginTitle>
-                <LoginSubText>possui alguma</LoginSubText>
-                <LoginSubText>conta registrada?</LoginSubText>
-                <FormContainer>
-                    <InputInfo>Prontuário</InputInfo>
-                    <LoginInput></LoginInput>
-                    <InputInfo>Senha</InputInfo>
-                    <LoginInput></LoginInput>
-                    <LoginButtonEnter onClick={() => history(HOMELOGGED)}>Entrar</LoginButtonEnter>
-                    <LoginButtonNew onClick={() => history(REGISTER)}>Criar uma conta</LoginButtonNew>
-                    <LoginForgot>Esqueci minha senha</LoginForgot>
-                </FormContainer>
-            </LoginForm>
-        </HomeContainer>
-    );
+export default function Login() {
+  const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const history = useNavigate();
+  const [userData, setUserData] = useState({
+    code: "",
+    password: "",
+  });
+
+  const handleInputChange = (event: { target: { name: any; value: any } }) => {
+    const { name, value } = event.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${api}/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Entrou");
+        // Você pode adicionar lógica adicional aqui, como salvar o token de autenticação em localStorage ou sessionStorage.
+        history(HOMELOGGED);
+      } else {
+        // Lidar com erros de autenticação, por exemplo, exibir uma mensagem de erro.
+        console.error("Erro ao fazer login:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
+  };
+
+  return (
+    <HomeContainer>
+      <LeftBlock>
+        <LoginImg src={LOGINIMG} alt=""></LoginImg>
+      </LeftBlock>
+      <LoginForm>
+        <LoginTitle>Bem vindo(a),</LoginTitle>
+        <LoginSubText>possui alguma</LoginSubText>
+        <LoginSubText>conta registrada?</LoginSubText>
+        <FormContainer>
+          <InputInfo>Prontuário</InputInfo>
+          <LoginInput
+            type="text"
+            name="code"
+            value={userData.code}
+            onChange={handleInputChange}
+          />
+          <InputInfo>Senha</InputInfo>
+          <InputButtonDiv>
+            <LoginInput
+              type={isRevealPassword ? "text" : "password"}
+              name="password"
+              value={userData.password}
+              onChange={handleInputChange}
+            />
+            <HideButton
+              title={isRevealPassword ? "Hide password" : "Show password"}
+              src={isRevealPassword ? hidePasswordImg : showPasswordImg}
+              onClick={() => setIsRevealPassword((prevState) => !prevState)}
+            />
+          </InputButtonDiv>
+          <LoginButtonEnter onClick={handleLogin}>Entrar</LoginButtonEnter>
+          <LoginButtonNew onClick={() => history(REGISTER)}>
+            Criar uma conta
+          </LoginButtonNew>
+          <LoginForgot>Esqueci minha senha</LoginForgot>
+        </FormContainer>
+      </LoginForm>
+    </HomeContainer>
+  );
 }
