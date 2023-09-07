@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CardRoomTitle,
   CardsTitles,
@@ -32,11 +32,87 @@ import {
   WrapSquares,
 } from "../../styles/Rooms";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { api } from "../../services/api";
+
+interface Sala {
+  id: string;
+  block: string;
+  name: string;
+  access: any[];
+}
 
 export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(-1);
   const [selectedRoomColor, setSelectedRoomColor] = useState("");
+  const [blockBSalas, setBlockBSalas] = useState<Sala[]>([]);
+  const [blockCSalas, setBlockCSalas] = useState<Sala[]>([]);
+  const [blockDSalas, setBlockDSalas] = useState<Sala[]>([]);
+  const [blockESalas, setBlockESalas] = useState<Sala[]>([]);
+
+  useEffect(() => {
+    fetch(`${api}/classroom/block/B`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar salas do bloco B");
+        }
+        return response.json();
+      })
+      .then((data: Sala[]) => {
+        setBlockBSalas(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar salas do bloco B:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${api}/classroom/block/C`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar salas do bloco C");
+        }
+        return response.json();
+      })
+      .then((data: Sala[]) => {
+        setBlockCSalas(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar salas do bloco C:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${api}/classroom/block/D`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar salas do bloco D");
+        }
+        return response.json();
+      })
+      .then((data: Sala[]) => {
+        setBlockDSalas(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar salas do bloco D:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`${api}/classroom/block/E`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao buscar salas do bloco E");
+        }
+        return response.json();
+      })
+      .then((data: Sala[]) => {
+        setBlockESalas(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar salas do bloco E:", error);
+      });
+  }, []);
 
   const handleClick = (index: number, color: string) => {
     setSelectedRoom(index);
@@ -46,7 +122,7 @@ export default function Rooms() {
 
   const handleDispose = () => {
     setSideOpt(false);
-  }
+  };
 
   return (
     <RoomsContainer>
@@ -72,16 +148,28 @@ export default function Rooms() {
           <CardsTitles>Bloco A</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(0, "#42BC37")}>
+            <RoomsSquares
+              color="#42BC37"
+              onClick={() => handleClick(0, "#42BC37")}
+            >
               102
             </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(1, "#EF835F")}>
+            <RoomsSquares
+              color="#EF835F"
+              onClick={() => handleClick(1, "#EF835F")}
+            >
               103
             </RoomsSquares>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(2, "#42BC37")}>
+            <RoomsSquares
+              color="#42BC37"
+              onClick={() => handleClick(2, "#42BC37")}
+            >
               104
             </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(3, "#EF835F")}>
+            <RoomsSquares
+              color="#EF835F"
+              onClick={() => handleClick(3, "#EF835F")}
+            >
               105
             </RoomsSquares>
           </WrapRooms>
@@ -90,75 +178,84 @@ export default function Rooms() {
           <CardsTitles>Bloco B</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(4, "#42BC37")}>
-              102
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(5, "#EF835F")}>
-              103
-            </RoomsSquares>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(6, "#42BC37")}>
-              104
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(7, "#EF835F")}>
-              105
-            </RoomsSquares>
+            {blockBSalas.map((sala, index) => (
+              <RoomsSquares
+                key={sala.id}
+                color="#42BC37" // Substitua "color" pela propriedade cor da sua sala, se existir
+                onClick={() => handleClick(index, "#42BC37")}
+              >
+                {sala.name}
+              </RoomsSquares>
+            ))}
           </WrapRooms>
         </RoomsCards>
         <RoomsCards>
           <CardsTitles>Bloco C</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(8, "#42BC37")}>
-              102
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(9, "#EF835F")}>
-              103
-            </RoomsSquares>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(10, "#42BC37")}>
-              104
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(11, "#EF835F")}>
-              105
-            </RoomsSquares>
+            {blockCSalas.map((sala, index) => (
+              <RoomsSquares
+                key={sala.id}
+                color="#42BC37" 
+                onClick={() => handleClick(index, "#42BC37")}
+              >
+                {sala.name}
+              </RoomsSquares>
+            ))}
           </WrapRooms>
         </RoomsCards>
         <RoomsCards>
           <CardsTitles>Bloco D</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(8, "#42BC37")}>
-              102
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(9, "#EF835F")}>
-              103
-            </RoomsSquares>
-            <RoomsSquares color="#42BC37" onClick={() => handleClick(10, "#42BC37")}>
-              104
-            </RoomsSquares>
-            <RoomsSquares color="#EF835F" onClick={() => handleClick(11, "#EF835F")}>
-              105
-            </RoomsSquares>
+          {blockDSalas.map((sala, index) => (
+              <RoomsSquares
+                key={sala.id}
+                color="#42BC37" 
+                onClick={() => handleClick(index, "#42BC37")}
+              >
+                {sala.name}
+              </RoomsSquares>
+            ))}
           </WrapRooms>
         </RoomsCards>
-        
+        <RoomsCards>
+          <CardsTitles>Bloco E</CardsTitles>
+          <CardRoomTitle>Salas</CardRoomTitle>
+          <WrapRooms>
+          {blockESalas.map((sala, index) => (
+              <RoomsSquares
+                key={sala.id}
+                color="#42BC37" 
+                onClick={() => handleClick(index, "#42BC37")}
+              >
+                {sala.name}
+              </RoomsSquares>
+            ))}
+          </WrapRooms>
+        </RoomsCards>
       </RoomsCardsContainer>
       {sideOpt && selectedRoom !== null && (
         <Overlay>
           <OverlayMenu>
             <FirstRowOverlay>
-              <DisposeButton onClick={handleDispose}><AiOutlineCloseCircle size={34}/></DisposeButton>
-              <OpenOrClosedTag color={selectedRoomColor}>{selectedRoomColor === "#42BC37" ? "Aberta" : "Fechada"}</OpenOrClosedTag>
+              <DisposeButton onClick={handleDispose}>
+                <AiOutlineCloseCircle size={34} />
+              </DisposeButton>
+              <OpenOrClosedTag color={selectedRoomColor}>
+                {selectedRoomColor === "#42BC37" ? "Aberta" : "Fechada"}
+              </OpenOrClosedTag>
             </FirstRowOverlay>
-            {(selectedRoom + 102) <= 105 && (
+            {selectedRoom + 102 <= 105 && (
               <OverlayTitle>Sala A{selectedRoom + 102}</OverlayTitle>
             )}
-            {(selectedRoom + 102) > 105 && (selectedRoom + 102) < 110 && (
+            {selectedRoom + 102 > 105 && selectedRoom + 102 < 110 && (
               <OverlayTitle>Sala B{selectedRoom + 102 - 4}</OverlayTitle>
             )}
-            {(selectedRoom + 102) >= 110 && (selectedRoom + 102) < 115 &&(
+            {selectedRoom + 102 >= 110 && selectedRoom + 102 < 115 && (
               <OverlayTitle>Sala C{selectedRoom + 102 - 8}</OverlayTitle>
             )}
-            {(selectedRoom + 102) > 115 && (
+            {selectedRoom + 102 > 115 && (
               <OverlayTitle>Sala D{selectedRoom + 102}</OverlayTitle>
             )}
             <SecondRow>

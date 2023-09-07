@@ -41,7 +41,6 @@ export default function HomeLogged() {
   return (
     <HomeLoggedContainer>
       <LeftDrawer>
-        
         <DrawerTitle>Smartlock Dashboard</DrawerTitle>
         <DrawerButtons onClick={()=> handleButtonClick(1)} className={selectedTab === 1 ? "active" : ""}>
           <SiGoogleclassroom size={22} /> Salas
