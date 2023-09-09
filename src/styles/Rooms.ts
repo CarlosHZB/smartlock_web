@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const RoomsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    /* height: 100vh; */
     width: 78%;
     background-color: #D2D9DE;
 `

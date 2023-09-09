@@ -18,12 +18,15 @@ import {
   LoginTitle,
 } from "../../styles/Login";
 import LOGINIMG from "../../assets/img/loginImg.png";
-import { api } from "../../services/api";
 import showPasswordImg from "../../assets/img/hide.svg";
 import hidePasswordImg from "../../assets/img/show.svg";
+import { loginUser } from "../../contexts/auth";
+import { CircularProgress } from "@mui/material";
+
 
 export default function Login() {
   const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useNavigate();
   const [userData, setUserData] = useState({
     code: "",
@@ -35,28 +38,19 @@ export default function Login() {
     setUserData({ ...userData, [name]: value });
   };
 
+
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${api}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Entrou");
-        // Você pode adicionar lógica adicional aqui, como salvar o token de autenticação em localStorage ou sessionStorage.
-        history(HOMELOGGED);
-      } else {
-        // Lidar com erros de autenticação, por exemplo, exibir uma mensagem de erro.
-        console.error("Erro ao fazer login:", response.statusText);
-      }
+      setLoading(true);
+      const data = await loginUser(userData);
+  
+      // Salvar o token de autenticação em localStorage ou sessionStorage.
+  
+      history(HOMELOGGED);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -90,7 +84,9 @@ export default function Login() {
               onClick={() => setIsRevealPassword((prevState) => !prevState)}
             />
           </InputButtonDiv>
-          <LoginButtonEnter onClick={handleLogin}>Entrar</LoginButtonEnter>
+          <LoginButtonEnter onClick={handleLogin}>
+              {loading ? <CircularProgress size={20} color="inherit" /> : 'Entrar'}
+          </LoginButtonEnter>
           <LoginButtonNew onClick={() => history(REGISTER)}>
             Criar uma conta
           </LoginButtonNew>

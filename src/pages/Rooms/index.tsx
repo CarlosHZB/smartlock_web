@@ -32,14 +32,9 @@ import {
   WrapSquares,
 } from "../../styles/Rooms";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { api } from "../../services/api";
+import { Sala, getRoomsByBlock } from "../../contexts/rooms";
 
-interface Sala {
-  id: string;
-  block: string;
-  name: string;
-  access: any[];
-}
+
 
 export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
@@ -51,13 +46,7 @@ export default function Rooms() {
   const [blockESalas, setBlockESalas] = useState<Sala[]>([]);
 
   useEffect(() => {
-    fetch(`${api}/classroom/block/B`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar salas do bloco B");
-        }
-        return response.json();
-      })
+    getRoomsByBlock("B")
       .then((data: Sala[]) => {
         setBlockBSalas(data);
       })
@@ -67,50 +56,32 @@ export default function Rooms() {
   }, []);
 
   useEffect(() => {
-    fetch(`${api}/classroom/block/C`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar salas do bloco C");
-        }
-        return response.json();
-      })
+    getRoomsByBlock("C")
       .then((data: Sala[]) => {
         setBlockCSalas(data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar salas do bloco C:", error);
+        console.error("Erro ao buscar salas do bloco B:", error);
       });
   }, []);
 
   useEffect(() => {
-    fetch(`${api}/classroom/block/D`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar salas do bloco D");
-        }
-        return response.json();
-      })
+    getRoomsByBlock("D")
       .then((data: Sala[]) => {
         setBlockDSalas(data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar salas do bloco D:", error);
+        console.error("Erro ao buscar salas do bloco B:", error);
       });
   }, []);
 
   useEffect(() => {
-    fetch(`${api}/classroom/block/E`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar salas do bloco E");
-        }
-        return response.json();
-      })
+    getRoomsByBlock("E")
       .then((data: Sala[]) => {
         setBlockESalas(data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar salas do bloco E:", error);
+        console.error("Erro ao buscar salas do bloco B:", error);
       });
   }, []);
 
@@ -144,7 +115,7 @@ export default function Rooms() {
       </HeaderRooms>
       <RoomsCardsContainer>
         <Title>Salas</Title>
-        <RoomsCards>
+        {/* <RoomsCards>
           <CardsTitles>Bloco A</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
@@ -173,7 +144,7 @@ export default function Rooms() {
               105
             </RoomsSquares>
           </WrapRooms>
-        </RoomsCards>
+        </RoomsCards> */}
         <RoomsCards>
           <CardsTitles>Bloco B</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
@@ -181,7 +152,7 @@ export default function Rooms() {
             {blockBSalas.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37" // Substitua "color" pela propriedade cor da sua sala, se existir
+                color="#42BC37" 
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
