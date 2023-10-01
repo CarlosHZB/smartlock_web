@@ -1,21 +1,8 @@
 import { useState } from "react";
-import { BiUserCircle } from "react-icons/bi";
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
-import { MdOutlineBook } from "react-icons/md";
-import { PiStudentBold } from "react-icons/pi";
-import { SiGoogleclassroom } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
+import Drawer from "../../components/Drawer/Drawer";
 import {
-  DrawerButtons,
-  DrawerTitle,
-  HomeLoggedContainer,
-  LeftDrawer,
-  LogoutButton,
-  UserId,
-  UserInfo,
-  UserInfoContainer,
-  UserName,
+  HomeLoggedContainer
 } from "../../styles/HomeLogged";
 import Class from "../Class";
 import Rooms from "../Rooms";
@@ -40,31 +27,7 @@ export default function HomeLogged() {
 
   return (
     <HomeLoggedContainer>
-      <LeftDrawer>
-        <DrawerTitle>Smartlock Dashboard</DrawerTitle>
-        <DrawerButtons onClick={() => handleButtonClick(1)} className={selectedTab === 1 ? "active" : ""}>
-          <SiGoogleclassroom size={22} /> Salas
-        </DrawerButtons>
-        <DrawerButtons onClick={() => handleButtonClick(2)} className={selectedTab === 2 ? "active" : ""}>
-          <FaChalkboardTeacher size={22} /> Professores
-        </DrawerButtons>
-        <DrawerButtons onClick={() => handleButtonClick(3)} className={selectedTab === 3 ? "active" : ""}>
-          <PiStudentBold size={22} /> Alunos
-        </DrawerButtons>
-        <DrawerButtons onClick={() => handleButtonClick(4)} className={selectedTab === 4 ? "active" : ""}>
-          <MdOutlineBook size={22} /> Aulas
-        </DrawerButtons>
-
-
-        <LogoutButton><FiLogOut size={22} /> Sair</LogoutButton>
-        <UserInfoContainer>
-          <BiUserCircle size={35} />
-          <UserInfo>
-            <UserName>Carlos Braga</UserName>
-            <UserId>BI3040031</UserId>
-          </UserInfo>
-        </UserInfoContainer>
-      </LeftDrawer>
+      <Drawer selectedTab={selectedTab} handleButtonClick={handleButtonClick} />
       {pages[selectedTab - 1]}
     </HomeLoggedContainer>
   );

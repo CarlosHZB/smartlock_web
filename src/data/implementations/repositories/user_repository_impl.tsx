@@ -12,6 +12,19 @@ class UserRepositoryImpl implements UserRepository {
         this.api = provider;
     }
 
+    async getUserById(id: string): Promise<User> {
+        try {
+            const response = await this.api.get(`/user/${id}`);
+            const userData: UserProps = response.data;
+
+            const user = new User(userData);
+
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async login(code: string, password: string): Promise<User> {
         try {
             const response = await this.api.post(

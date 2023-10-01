@@ -76,7 +76,7 @@ export interface UserProps {
       return this.props.updateAt;
     }
   
-    set updatedAt(value: Date) {
+    set updatedAt(value: Date | undefined ) {
       this.props.updateAt = value;
     }
   }

@@ -27,7 +27,7 @@ import {
 export default function Login() {
   const history = useNavigate();
 
-  const {  } = useUser()
+  const { login } = useUser()
   const [isRevealPassword, setIsRevealPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
@@ -44,10 +44,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      // const data = await userContext.
-  
-      // Salvar o token de autenticação em localStorage ou sessionStorage.
-  
+      await login(userData.code, userData.password)
       history(HOMELOGGED);
     } catch (error) {
       console.error("Erro ao fazer login:", error);

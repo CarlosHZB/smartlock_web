@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LOGINIMG from "../../assets/img/loginImg.png";
-import { LOGIN } from "../../core/app-urls";
-import { api } from "../../data/services/api_provider";
+// import { api } from "../../data/services/api_provider";
 import { FormContainer, InputInfo, LeftBlock, LoginImg, RegisterButtonEnter, RegisterContainer, RegisterForm, RegisterInput, RegisterSubText, RegisterTitle } from "../../styles/Register";
 
 export default function Register() {
@@ -21,27 +20,27 @@ export default function Register() {
   };
 
   const handleRegister = async () => {
-    try {
-      const response = await fetch(`${api}/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+    // try {
+    //   const response = await fetch(`${api}/user`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(userData),
+    //   });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Conta criada com sucesso!");
-        // Redirecionar para a página de login após o registro bem-sucedido.
-        history(LOGIN);
-      } else {
-        // Lidar com erros de registro, por exemplo, exibir uma mensagem de erro.
-        console.error("Erro ao criar conta:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Erro ao criar conta:", error);
-    }
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     console.log("Conta criada com sucesso!");
+    //     // Redirecionar para a página de login após o registro bem-sucedido.
+    //     history(LOGIN);
+    //   } else {
+    //     // Lidar com erros de registro, por exemplo, exibir uma mensagem de erro.
+    //     console.error("Erro ao criar conta:", response.statusText);
+    //   }
+    // } catch (error) {
+    //   console.error("Erro ao criar conta:", error);
+    // }
   };
 
   return (
