@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { Sala, getRoomsByBlock } from "../../data/contexts/rooms";
-import supabase from "../../data/services/supabase";
+import { Classroom } from "../../data/models/classroom";
 import {
   CardRoomTitle,
   CardsTitles,
@@ -41,66 +40,66 @@ export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(-1);
   const [selectedRoomColor, setSelectedRoomColor] = useState("");
-  const [blockBSalas, setBlockBSalas] = useState<Sala[]>([]);
-  const [blockCSalas, setBlockCSalas] = useState<Sala[]>([]);
-  const [blockDSalas, setBlockDSalas] = useState<Sala[]>([]);
-  const [blockESalas, setBlockESalas] = useState<Sala[]>([]);
+  const [blockBSalas, setBlockBSalas] = useState<Classroom[]>([]);
+  const [blockCSalas, setBlockCSalas] = useState<Classroom[]>([]);
+  const [blockDSalas, setBlockDSalas] = useState<Classroom[]>([]);
+  const [blockESalas, setBlockESalas] = useState<Classroom[]>([]);
 
-  useEffect(() => {
-    getRoomsByBlock("B")
-      .then((data: Sala[]) => {
-        setBlockBSalas(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar salas do bloco B:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getRoomsByBlock("B")
+  //     .then((data: Sala[]) => {
+  //       setBlockBSalas(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar salas do bloco B:", error);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    getRoomsByBlock("C")
-      .then((data: Sala[]) => {
-        setBlockCSalas(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar salas do bloco B:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getRoomsByBlock("C")
+  //     .then((data: Sala[]) => {
+  //       setBlockCSalas(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar salas do bloco B:", error);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    getRoomsByBlock("D")
-      .then((data: Sala[]) => {
-        setBlockDSalas(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar salas do bloco B:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getRoomsByBlock("D")
+  //     .then((data: Sala[]) => {
+  //       setBlockDSalas(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar salas do bloco B:", error);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    getRoomsByBlock("E")
-      .then((data: Sala[]) => {
-        setBlockESalas(data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar salas do bloco B:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getRoomsByBlock("E")
+  //     .then((data: Sala[]) => {
+  //       setBlockESalas(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar salas do bloco B:", error);
+  //     });
+  // }, []);
 
 
 
-  useEffect(() => {
-    const subscription = supabase
-      .channel('any')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Lock' }, payload => {
-        console.log('Change received!', payload)
-      })
-      .subscribe()
+  // useEffect(() => {
+  //   const subscription = supabase
+  //     .channel('any')
+  //     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Lock' }, payload => {
+  //       console.log('Change received!', payload)
+  //     })
+  //     .subscribe()
 
-    // Certifique-se de cancelar a assinatura quando o componente for desmontado
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  //   // Certifique-se de cancelar a assinatura quando o componente for desmontado
+  //   return () => {
+  //     subscription.unsubscribe();
+  //   };
+  // }, []);
 
   const handleClick = (index: number, color: string) => {
     setSelectedRoom(index);

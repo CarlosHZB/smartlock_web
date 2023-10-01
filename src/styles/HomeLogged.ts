@@ -94,6 +94,19 @@ export const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
+
+    p {
+        margin: 0;
+    }
+
+    .name-drawer {
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+
+    .code-drawer {
+        font-weight: lighter;
+    }
 `
 
 export const UserName = styled.h1`
