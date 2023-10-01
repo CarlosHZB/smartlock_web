@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import showPasswordImg from "../../assets/img/hide.svg";
+import LOGINIMG from "../../assets/img/loginImg.png";
+import hidePasswordImg from "../../assets/img/show.svg";
 import { HOMELOGGED, REGISTER } from "../../core/app-urls";
+import { useUser } from "../../data/contexts/auth";
 import {
   FormContainer,
   HideButton,
@@ -17,17 +22,14 @@ import {
   LoginSubText,
   LoginTitle,
 } from "../../styles/Login";
-import LOGINIMG from "../../assets/img/loginImg.png";
-import showPasswordImg from "../../assets/img/hide.svg";
-import hidePasswordImg from "../../assets/img/show.svg";
-import { loginUser } from "../../contexts/auth";
-import { CircularProgress } from "@mui/material";
 
 
 export default function Login() {
+  const history = useNavigate();
+
+  const {  } = useUser()
   const [isRevealPassword, setIsRevealPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const history = useNavigate();
   const [userData, setUserData] = useState({
     code: "",
     password: "",
@@ -42,7 +44,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const data = await loginUser(userData);
+      // const data = await userContext.
   
       // Salvar o token de autenticação em localStorage ou sessionStorage.
   
@@ -56,7 +58,7 @@ export default function Login() {
   return (
     <HomeContainer>
       <LeftBlock>
-        <LoginImg src={LOGINIMG} alt=""></LoginImg>
+        <LoginImg src={LOGINIMG} alt="Logo"></LoginImg>
       </LeftBlock>
       <LoginForm>
         <LoginTitle>Bem vindo(a),</LoginTitle>

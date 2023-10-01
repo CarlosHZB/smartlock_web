@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Sala, getRoomsByBlock } from "../../data/contexts/rooms";
+import supabase from "../../data/services/supabase";
 import {
   CardRoomTitle,
   CardsTitles,
@@ -31,8 +34,6 @@ import {
   WrapRooms,
   WrapSquares,
 } from "../../styles/Rooms";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { Sala, getRoomsByBlock } from "../../contexts/rooms";
 
 
 
@@ -83,6 +84,22 @@ export default function Rooms() {
       .catch((error) => {
         console.error("Erro ao buscar salas do bloco B:", error);
       });
+  }, []);
+
+
+
+  useEffect(() => {
+    const subscription = supabase
+      .channel('any')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Lock' }, payload => {
+        console.log('Change received!', payload)
+      })
+      .subscribe()
+
+    // Certifique-se de cancelar a assinatura quando o componente for desmontado
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleClick = (index: number, color: string) => {
@@ -152,7 +169,7 @@ export default function Rooms() {
             {blockBSalas.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37" 
+                color="#42BC37"
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -167,7 +184,7 @@ export default function Rooms() {
             {blockCSalas.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37" 
+                color="#42BC37"
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -179,10 +196,10 @@ export default function Rooms() {
           <CardsTitles>Bloco D</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-          {blockDSalas.map((sala, index) => (
+            {blockDSalas.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37" 
+                color="#42BC37"
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -194,10 +211,10 @@ export default function Rooms() {
           <CardsTitles>Bloco E</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-          {blockESalas.map((sala, index) => (
+            {blockESalas.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37" 
+                color="#42BC37"
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}

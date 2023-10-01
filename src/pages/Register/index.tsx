@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormContainer, InputInfo, LeftBlock, LoginImg, RegisterButtonEnter, RegisterContainer, RegisterForm, RegisterInput, RegisterSubText, RegisterTitle } from "../../styles/Register";
 import LOGINIMG from "../../assets/img/loginImg.png";
-import { api } from "../../services/api";
 import { LOGIN } from "../../core/app-urls";
+import { api } from "../../data/services/api_provider";
+import { FormContainer, InputInfo, LeftBlock, LoginImg, RegisterButtonEnter, RegisterContainer, RegisterForm, RegisterInput, RegisterSubText, RegisterTitle } from "../../styles/Register";
 
 export default function Register() {
   const history = useNavigate();
