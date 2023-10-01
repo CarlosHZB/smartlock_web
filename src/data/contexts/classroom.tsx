@@ -15,11 +15,7 @@ interface ClassroomContextProps {
 
 interface ClassroomContextType {
     classroomRepository: ClassroomRepository;
-    classroomsA: Classroom[];
-    classroomsB: Classroom[];
-    classroomsC: Classroom[];
-    classroomsD: Classroom[];
-    classroomsE: Classroom[];
+    blocks: Classroom[][];
     getClassromRoomsByBlock(block: string): Promise<Classroom[]>;
     getAllClassrooms(): Promise<void>;
     updateClassroomState(classroomId: string, newLockState: boolean): void;
@@ -31,11 +27,7 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
     const provider = useAPI();
     const classroomRepository = new ClassroomRepositoryImpl(provider)
 
-    const [classroomsA, setClassroomsA] = useState<Classroom[]>([])
-    const [classroomsB, setClassroomsB] = useState<Classroom[]>([])
-    const [classroomsC, setClassroomsC] = useState<Classroom[]>([])
-    const [classroomsD, setClassroomsD] = useState<Classroom[]>([])
-    const [classroomsE, setClassroomsE] = useState<Classroom[]>([])
+    const [blocks, setBlocks] = useState<Classroom[][]>([])
 
     async function getClassromRoomsByBlock(block: string): Promise<Classroom[]> {
         try {
@@ -48,71 +40,58 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
 
     async function getAllClassrooms(): Promise<void> {
         try {
-            const classroomsA = await getClassromRoomsByBlock('A')
-            const classroomsB = await getClassromRoomsByBlock('B')
-            const classroomsC = await getClassromRoomsByBlock('C')
-            const classroomsD = await getClassromRoomsByBlock('D')
-            const classroomsE = await getClassromRoomsByBlock('E')
+            const blockPromises = ['A', 'B', 'C', 'D', 'E'].map(async (block) => {
+                return await getClassromRoomsByBlock(block);
+            });
 
-            setClassroomsA(classroomsA)
-            setClassroomsB(classroomsB)
-            setClassroomsC(classroomsC)
-            setClassroomsD(classroomsD)
-            setClassroomsE(classroomsE)
+            const blockClassrooms = await Promise.all(blockPromises);
 
-            console.log(classroomsE)
+            setBlocks(blockClassrooms);
+
+            console.log(blocks[2]);
+            console.log(blocks[3]);
+            console.log(blocks[4]);
         } catch (error) {
-            throw error
+            throw error;
         }
-    };
+    }
+
 
     function findTheClassroomAndUpdateState(
-        classroomLists: Classroom[][],
+        classroomsMatrix: Classroom[][],
         classroomId: string,
         newLockState: boolean
     ) {
-        const updatedLists = classroomLists.map((classroomList) => {
-            return classroomList.map((classroom) => {
+        return classroomsMatrix.map((blockClassrooms) =>
+            blockClassrooms.map((classroom) => {
                 if (classroom.id === classroomId) {
-                    classroom!.lock!.state = newLockState;
+                    classroom.lock!.state = newLockState;
                 }
                 return classroom;
-            });
-        });
-
-        return updatedLists;
+            })
+        );
     }
 
     function updateClassroomState(classroomId: string, newLockState: boolean) {
 
         console.log(classroomId, newLockState)
 
-        console.log(classroomsE)
-
-        let classroomsAll = [classroomsA, classroomsB, classroomsC, classroomsD, classroomsE]
+        console.log(blocks)
 
         const updatedClassrooms = findTheClassroomAndUpdateState(
-            classroomsAll,
+            blocks,
             classroomId,
             newLockState
         );
 
         // Atualize as listas com os resultados
-        setClassroomsA(updatedClassrooms[0]);
-        setClassroomsB(updatedClassrooms[1]);
-        setClassroomsC(updatedClassrooms[2]);
-        setClassroomsD(updatedClassrooms[3]);
-        setClassroomsE(updatedClassrooms[4]);
+        setBlocks(updatedClassrooms);
     }
 
     return (
         <ClassroomContext.Provider value={{
             classroomRepository,
-            classroomsA,
-            classroomsB,
-            classroomsC,
-            classroomsD,
-            classroomsE,
+            blocks,
             getClassromRoomsByBlock,
             getAllClassrooms,
             updateClassroomState

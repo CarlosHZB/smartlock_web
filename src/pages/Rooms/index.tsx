@@ -42,7 +42,7 @@ export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(-1);
   const [selectedRoomColor, setSelectedRoomColor] = useState("");
-  const { classroomsA, classroomsB, classroomsC, classroomsD, classroomsE, getAllClassrooms, updateClassroomState } = useClassroom()
+  const { blocks, getAllClassrooms, updateClassroomState } = useClassroom()
   const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
@@ -112,81 +112,23 @@ export default function Rooms() {
       </HeaderRooms>
       <RoomsCardsContainer>
         <Title>Salas</Title>
-        <RoomsCards>
-          <CardsTitles>Bloco A</CardsTitles>
-          <CardRoomTitle>Salas</CardRoomTitle>
-          <WrapRooms>
-            {classroomsA.map((sala, index) => (
-              <RoomsSquares
-                key={sala.id}
-                state={sala.lock != null ? sala.lock?.state : null}
-                onClick={() => handleClick(index, "#42BC37")}
-              >
-                {sala.name}
-              </RoomsSquares>
-            ))}
-          </WrapRooms>
-        </RoomsCards>
-        <RoomsCards>
-          <CardsTitles>Bloco B</CardsTitles>
-          <CardRoomTitle>Salas</CardRoomTitle>
-          <WrapRooms>
-            {classroomsB.map((sala, index) => (
-              <RoomsSquares
-                key={sala.id}
-                state={sala.lock != null ? sala.lock?.state : null}
-                onClick={() => handleClick(index, "#42BC37")}
-              >
-                {sala.name}
-              </RoomsSquares>
-            ))}
-          </WrapRooms>
-        </RoomsCards>
-        <RoomsCards>
-          <CardsTitles>Bloco C</CardsTitles>
-          <CardRoomTitle>Salas</CardRoomTitle>
-          <WrapRooms>
-            {classroomsC.map((sala, index) => (
-              <RoomsSquares
-                key={sala.id}
-                state={sala.lock != null ? sala.lock?.state : null}
-                onClick={() => handleClick(index, "#42BC37")}
-              >
-                {sala.name}
-              </RoomsSquares>
-            ))}
-          </WrapRooms>
-        </RoomsCards>
-        <RoomsCards>
-          <CardsTitles>Bloco D</CardsTitles>
-          <CardRoomTitle>Salas</CardRoomTitle>
-          <WrapRooms>
-            {classroomsD.map((sala, index) => (
-              <RoomsSquares
-                key={sala.id}
-                state={sala.lock != null ? sala.lock?.state : null}
-                onClick={() => handleClick(index, "#42BC37")}
-              >
-                {sala.name}
-              </RoomsSquares>
-            ))}
-          </WrapRooms>
-        </RoomsCards>
-        <RoomsCards>
-          <CardsTitles>Bloco E</CardsTitles>
-          <CardRoomTitle>Salas</CardRoomTitle>
-          <WrapRooms>
-            {classroomsE.map((sala, index) => (
-              <RoomsSquares
-                key={sala.id}
-                state={sala.lock != null ? sala.lock?.state : null}
-                onClick={() => handleClick(index, "#42BC37")}
-              >
-                {sala.name}
-              </RoomsSquares>
-            ))}
-          </WrapRooms>
-        </RoomsCards>
+        {blocks.map((classrooms, blockIndex) => (
+          <RoomsCards key={`block-${blockIndex}`}>
+            <CardsTitles>{`Bloco ${String.fromCharCode(65 + blockIndex)}`}</CardsTitles>
+            <CardRoomTitle>Salas</CardRoomTitle>
+            <WrapRooms>
+              {classrooms.map((sala, index) => (
+                <RoomsSquares
+                  key={sala.id}
+                  state={sala.lock != null ? sala.lock?.state : null}
+                  onClick={() => handleClick(index, "#42BC37")}
+                >
+                  {sala.name}
+                </RoomsSquares>
+              ))}
+            </WrapRooms>
+          </RoomsCards>
+        ))}
       </RoomsCardsContainer>
       {sideOpt && selectedRoom !== null && (
         <Overlay>
