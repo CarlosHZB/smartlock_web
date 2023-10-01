@@ -1,47 +1,31 @@
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import ClassroomSelected from "../../components/Classroom/Classroom_selected";
 import { useClassroom } from "../../data/contexts";
+import { Classroom } from "../../data/models/classroom";
 import supabase from "../../data/services/supabase";
 import {
   CardRoomTitle,
   CardsTitles,
-  ClassAtMoment,
-  ClassName,
-  ClassTitle,
-  ClassesDiv,
-  DateStyle,
-  DateTimeColumn,
-  DisposeButton,
   DropDown,
-  FirstRowOverlay,
   HeaderRooms,
-  InformationColumn,
-  NextCLassesTitle,
-  OpenOrClosedTag,
-  Overlay,
-  OverlayMenu,
-  OverlayTitle,
   RoomsCards,
   RoomsCardsContainer,
   RoomsContainer,
   RoomsSquares,
-  SecondRow,
   SquareTexts,
   Squares,
-  TimeStyle,
   Title,
   WrapDropDowns,
   WrapRooms,
-  WrapSquares,
+  WrapSquares
 } from "../../styles/Rooms";
 
 
 
 export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState(-1);
-  const [selectedRoomColor, setSelectedRoomColor] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState<Classroom | null>(null);
   const { blocks, getAllClassrooms, updateClassroomState } = useClassroom()
   const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
 
@@ -70,7 +54,6 @@ export default function Rooms() {
       setSubscription(newSubscription);
     };
 
-    // Inicie a assinatura quando o componente for montado
     startSubscription();
 
     // Função de limpeza para desconectar a assinatura quando o componente for desmontado
@@ -82,9 +65,8 @@ export default function Rooms() {
   }, []);
 
 
-  const handleClick = (index: number, color: string) => {
-    setSelectedRoom(index);
-    setSelectedRoomColor(color);
+  const handleClick = (classroom: Classroom) => {
+    setSelectedRoom(classroom);
     setSideOpt(true);
   };
 
@@ -121,7 +103,7 @@ export default function Rooms() {
                 <RoomsSquares
                   key={sala.id}
                   state={sala.lock != null ? sala.lock?.state : null}
-                  onClick={() => handleClick(index, "#42BC37")}
+                  onClick={() => handleClick(sala)}
                 >
                   {sala.name}
                 </RoomsSquares>
@@ -131,77 +113,7 @@ export default function Rooms() {
         ))}
       </RoomsCardsContainer>
       {sideOpt && selectedRoom !== null && (
-        <Overlay>
-          <OverlayMenu>
-            <FirstRowOverlay>
-              <DisposeButton onClick={handleDispose}>
-                <AiOutlineCloseCircle size={34} />
-              </DisposeButton>
-              <OpenOrClosedTag color={selectedRoomColor}>
-                {selectedRoomColor === "#42BC37" ? "Aberta" : "Fechada"}
-              </OpenOrClosedTag>
-            </FirstRowOverlay>
-            {selectedRoom + 102 <= 105 && (
-              <OverlayTitle>Sala A{selectedRoom + 102}</OverlayTitle>
-            )}
-            {selectedRoom + 102 > 105 && selectedRoom + 102 < 110 && (
-              <OverlayTitle>Sala B{selectedRoom + 102 - 4}</OverlayTitle>
-            )}
-            {selectedRoom + 102 >= 110 && selectedRoom + 102 < 115 && (
-              <OverlayTitle>Sala C{selectedRoom + 102 - 8}</OverlayTitle>
-            )}
-            {selectedRoom + 102 > 115 && (
-              <OverlayTitle>Sala D{selectedRoom + 102}</OverlayTitle>
-            )}
-            <SecondRow>
-              <InformationColumn>
-                <ClassAtMoment>Aula No Momento</ClassAtMoment>
-                <ClassName>ProjetoIntegrador ll</ClassName>
-              </InformationColumn>
-              <InformationColumn>
-                <ClassAtMoment>Professor</ClassAtMoment>
-                <ClassName>Helen De Freitas</ClassName>
-              </InformationColumn>
-            </SecondRow>
-            <NextCLassesTitle>Próximas aulas nessa sala</NextCLassesTitle>
-            <ClassesDiv>
-              <ClassTitle>PPJE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>16:00 - 17:15</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <ClassesDiv>
-              <ClassTitle>MDAE9</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>18:00 - 19:00</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <ClassesDiv>
-              <ClassTitle>POOE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>20:00 - 21:00</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <NextCLassesTitle>Últimos acessos</NextCLassesTitle>
-            <ClassesDiv>
-              <ClassTitle>PPJE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>16:00 - 17:15</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <ClassesDiv>
-              <ClassTitle>MDAE9</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>18:00 - 19:00</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-          </OverlayMenu>
-        </Overlay>
+       <ClassroomSelected handleDispose={handleDispose} block="D" classroom={selectedRoom} />
       )}
     </RoomsContainer>
   );
