@@ -3,7 +3,7 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userIdStorage } from '../../core/app-local-keys';
-import { HOMELOGGED } from '../../core/app-urls';
+import { HOMELOGGED, LOGIN } from '../../core/app-urls';
 import UserRepositoryImpl from '../implementations/repositories/user_repository_impl';
 import { User } from '../models/user';
 import UserRepository from '../repositories/user_repository';
@@ -17,6 +17,7 @@ interface UserContextType {
   userRepository: UserRepository;
   user: User | null;
   login(code: string, password: string): Promise<void>;
+  logout(): Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -66,8 +67,14 @@ export const UserProvider: React.FC<UserContextProps> = ({ children }) => {
     }
   }
 
+  async function logout(): Promise<void> {
+    localStorage.removeItem(userIdStorage)
+    navigate(LOGIN);
+    setUser(null)
+  }
+
   return (
-    <UserContext.Provider value={{ userRepository, user, login }}>
+    <UserContext.Provider value={{ userRepository, user, login, logout }}>
       {children}
     </UserContext.Provider>
   );

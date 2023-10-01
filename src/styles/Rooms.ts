@@ -33,7 +33,7 @@ export const WrapDropDowns = styled.div`
 interface SquareProps {
     color: string;
 }
-  
+
 export const Squares = styled.div<SquareProps>`
    margin-left: 3rem;
    background-color: ${(props) => props.color};
@@ -94,9 +94,9 @@ export const RoomsCards = styled.div`
     flex-direction: column;
     background-color: #F2F8FD;
     width: 95%;
-    height: 110px;
     border-radius: 5px;
     margin-bottom: 35px;
+    padding-bottom: 1rem;
 `
 
 export const CardsTitles = styled.h1`
@@ -124,13 +124,13 @@ export const WrapRooms = styled.div`
 `
 
 interface RoomSquareProps {
-    color: string;
+    state: boolean | null;
 }
 
 export const RoomsSquares = styled.button<RoomSquareProps>`
    display: flex;
    margin-left: 1.2rem;
-   background-color: ${(props) => props.color};
+   background-color: ${(props) => props.state != null ? props.state ? "#EF835F" : "#42BC37" : "#797979"};
    height: 38px;
    width: 38px;
    border-radius: 5px;

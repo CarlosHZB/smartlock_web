@@ -15,7 +15,7 @@ interface DrawerProps {
 
 const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
 
-    const { user } = useUser()
+    const { user, logout } = useUser()
 
     return (
         <LeftDrawer>
@@ -32,7 +32,9 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
             <DrawerButtons onClick={() => handleButtonClick(4)} className={selectedTab === 4 ? "active" : ""}>
                 <MdOutlineBook size={22} /> Aulas
             </DrawerButtons>
-            <LogoutButton><FiLogOut size={22} /> Sair</LogoutButton>
+            <LogoutButton onClick={logout} >
+                <FiLogOut size={22} /> Sair
+            </LogoutButton>
             <UserInfoContainer>
                 <BiUserCircle size={35} />
                 <UserInfo>

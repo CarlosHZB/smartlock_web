@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { RealtimeChannel } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { Classroom } from "../../data/models/classroom";
+import { useClassroom } from "../../data/contexts";
+import supabase from "../../data/services/supabase";
 import {
   CardRoomTitle,
   CardsTitles,
@@ -40,66 +42,45 @@ export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(-1);
   const [selectedRoomColor, setSelectedRoomColor] = useState("");
-  const [blockBSalas, setBlockBSalas] = useState<Classroom[]>([]);
-  const [blockCSalas, setBlockCSalas] = useState<Classroom[]>([]);
-  const [blockDSalas, setBlockDSalas] = useState<Classroom[]>([]);
-  const [blockESalas, setBlockESalas] = useState<Classroom[]>([]);
+  const { classroomsA, classroomsB, classroomsC, classroomsD, classroomsE, getAllClassrooms, updateClassroomState } = useClassroom()
+  const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
 
-  // useEffect(() => {
-  //   getRoomsByBlock("B")
-  //     .then((data: Sala[]) => {
-  //       setBlockBSalas(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao buscar salas do bloco B:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    getAllClassrooms()
+  }, []);
 
-  // useEffect(() => {
-  //   getRoomsByBlock("C")
-  //     .then((data: Sala[]) => {
-  //       setBlockCSalas(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao buscar salas do bloco B:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    // Função para iniciar a assinatura
+    const startSubscription = async () => {
+      const newSubscription = supabase
+        .channel('lock-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'Lock',
+          },
+          (payload: any) => {
+            updateClassroomState(payload.new.classroom_id, payload.new.isClosed)
+          }
+        )
+        .subscribe();
 
-  // useEffect(() => {
-  //   getRoomsByBlock("D")
-  //     .then((data: Sala[]) => {
-  //       setBlockDSalas(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao buscar salas do bloco B:", error);
-  //     });
-  // }, []);
+      setSubscription(newSubscription);
+    };
 
-  // useEffect(() => {
-  //   getRoomsByBlock("E")
-  //     .then((data: Sala[]) => {
-  //       setBlockESalas(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao buscar salas do bloco B:", error);
-  //     });
-  // }, []);
+    // Inicie a assinatura quando o componente for montado
+    startSubscription();
 
+    // Função de limpeza para desconectar a assinatura quando o componente for desmontado
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, []);
 
-
-  // useEffect(() => {
-  //   const subscription = supabase
-  //     .channel('any')
-  //     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'Lock' }, payload => {
-  //       console.log('Change received!', payload)
-  //     })
-  //     .subscribe()
-
-  //   // Certifique-se de cancelar a assinatura quando o componente for desmontado
-  //   return () => {
-  //     subscription.unsubscribe();
-  //   };
-  // }, []);
 
   const handleClick = (index: number, color: string) => {
     setSelectedRoom(index);
@@ -131,44 +112,29 @@ export default function Rooms() {
       </HeaderRooms>
       <RoomsCardsContainer>
         <Title>Salas</Title>
-        {/* <RoomsCards>
+        <RoomsCards>
           <CardsTitles>Bloco A</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            <RoomsSquares
-              color="#42BC37"
-              onClick={() => handleClick(0, "#42BC37")}
-            >
-              102
-            </RoomsSquares>
-            <RoomsSquares
-              color="#EF835F"
-              onClick={() => handleClick(1, "#EF835F")}
-            >
-              103
-            </RoomsSquares>
-            <RoomsSquares
-              color="#42BC37"
-              onClick={() => handleClick(2, "#42BC37")}
-            >
-              104
-            </RoomsSquares>
-            <RoomsSquares
-              color="#EF835F"
-              onClick={() => handleClick(3, "#EF835F")}
-            >
-              105
-            </RoomsSquares>
+            {classroomsA.map((sala, index) => (
+              <RoomsSquares
+                key={sala.id}
+                state={sala.lock != null ? sala.lock?.state : null}
+                onClick={() => handleClick(index, "#42BC37")}
+              >
+                {sala.name}
+              </RoomsSquares>
+            ))}
           </WrapRooms>
-        </RoomsCards> */}
+        </RoomsCards>
         <RoomsCards>
           <CardsTitles>Bloco B</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            {blockBSalas.map((sala, index) => (
+            {classroomsB.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37"
+                state={sala.lock != null ? sala.lock?.state : null}
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -180,10 +146,10 @@ export default function Rooms() {
           <CardsTitles>Bloco C</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            {blockCSalas.map((sala, index) => (
+            {classroomsC.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37"
+                state={sala.lock != null ? sala.lock?.state : null}
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -195,10 +161,10 @@ export default function Rooms() {
           <CardsTitles>Bloco D</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            {blockDSalas.map((sala, index) => (
+            {classroomsD.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37"
+                state={sala.lock != null ? sala.lock?.state : null}
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}
@@ -210,10 +176,10 @@ export default function Rooms() {
           <CardsTitles>Bloco E</CardsTitles>
           <CardRoomTitle>Salas</CardRoomTitle>
           <WrapRooms>
-            {blockESalas.map((sala, index) => (
+            {classroomsE.map((sala, index) => (
               <RoomsSquares
                 key={sala.id}
-                color="#42BC37"
+                state={sala.lock != null ? sala.lock?.state : null}
                 onClick={() => handleClick(index, "#42BC37")}
               >
                 {sala.name}

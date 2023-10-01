@@ -4,7 +4,7 @@
 
 // UserRepository.ts
 
-import { Classroom } from '../../models/classroom';
+import { Classroom, convertJsonToClassroom } from '../../models/classroom';
 import ClassroomRepository from '../../repositories/classroom_repository';
 import { ApiContextType } from '../../services/api_provider';
 
@@ -19,15 +19,23 @@ class ClassroomRepositoryImpl implements ClassroomRepository {
     async getRoomsByBlock(block: string): Promise<Classroom[]> {
         try {
             const response = await this.api.get(`/classroom/block/${block}`);
-            if (!response.ok) {
-                throw new Error(`Erro ao buscar salas do bloco ${block}`);
+            const jsonData = response.data;
+
+            if (Array.isArray(jsonData)) {
+                // Mapear o JSON para instâncias da classe Classroom
+                const classrooms = jsonData.map((classroomData: any) =>
+                    convertJsonToClassroom(classroomData)
+                );
+
+                return classrooms;
+            } else {
+                throw new Error('Resposta da API não é um array JSON.');
             }
-            return response.json();
         } catch (error) {
             console.error(`Erro ao buscar salas do bloco ${block}:`, error);
             throw error;
         }
-    };
+    }
 }
 
 export default ClassroomRepositoryImpl;
