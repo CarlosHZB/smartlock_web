@@ -94,12 +94,12 @@ export default function Rooms() {
       </HeaderRooms>
       <RoomsCardsContainer>
         <Title>Salas</Title>
-        {blocks.map((classrooms, blockIndex) => (
-          <RoomsCards key={`block-${blockIndex}`}>
-            <CardsTitles>{`Bloco ${String.fromCharCode(65 + blockIndex)}`}</CardsTitles>
+        {blocks.map((block) => (
+          <RoomsCards key={`block-${block.name}`}>
+            <CardsTitles>{`Bloco ${block.name}`}</CardsTitles>
             <CardRoomTitle>Salas</CardRoomTitle>
             <WrapRooms>
-              {classrooms.map((sala, index) => (
+              {block.classrooms.map((sala) => (
                 <RoomsSquares
                   key={sala.id}
                   state={sala.lock != null ? sala.lock?.state : null}

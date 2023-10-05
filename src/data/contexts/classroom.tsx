@@ -5,6 +5,7 @@
 
 import { ReactNode, createContext, useContext, useState } from 'react';
 import ClassroomRepositoryImpl from '../implementations/repositories/classroom_repository_impl';
+import { Block } from '../models/block';
 import { Classroom } from '../models/classroom';
 import ClassroomRepository from '../repositories/classroom_repository';
 import { useAPI } from '../services/api_provider';
@@ -15,7 +16,7 @@ interface ClassroomContextProps {
 
 interface ClassroomContextType {
     classroomRepository: ClassroomRepository;
-    blocks: Classroom[][];
+    blocks: Block[];
     getClassromRoomsByBlock(block: string): Promise<Classroom[]>;
     getAllClassrooms(): Promise<void>;
     updateClassroomState(classroomId: string, newLockState: boolean): void;
@@ -27,7 +28,8 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
     const provider = useAPI();
     const classroomRepository = new ClassroomRepositoryImpl(provider)
 
-    const [blocks, setBlocks] = useState<Classroom[][]>([])
+    const [blocks, setBlocks] = useState<Block[]>([])
+    var blocksVar: Block[] = []
 
     async function getClassromRoomsByBlock(block: string): Promise<Classroom[]> {
         try {
@@ -41,52 +43,58 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
     async function getAllClassrooms(): Promise<void> {
         try {
             const blockPromises = ['A', 'B', 'C', 'D', 'E'].map(async (block) => {
-                return await getClassromRoomsByBlock(block);
+                const classrooms = await getClassromRoomsByBlock(block);
+                return new Block({ name: block, classrooms });
             });
 
-            const blockClassrooms = await Promise.all(blockPromises);
-
-            setBlocks(blockClassrooms);
-
-            console.log(blocks[2]);
-            console.log(blocks[3]);
-            console.log(blocks[4]);
+            const blocksWithData = await Promise.all(blockPromises);
+            blocksVar = blocksWithData
+            setBlocks(blocksWithData)
         } catch (error) {
             throw error;
         }
     }
 
-
     function findTheClassroomAndUpdateState(
-        classroomsMatrix: Classroom[][],
+        blocks: Block[],
         classroomId: string,
         newLockState: boolean
     ) {
-        return classroomsMatrix.map((blockClassrooms) =>
-            blockClassrooms.map((classroom) => {
-                if (classroom.id === classroomId) {
-                    classroom.lock!.state = newLockState;
-                }
-                return classroom;
-            })
-        );
+        return blocks.map((block) => {
+            return new Block({
+                name: block.name,
+                classrooms: block.classrooms.map((classroom) => {
+                    if (classroom instanceof Classroom) {
+                        if (classroom.id === classroomId) {
+                            // Update the lock state
+                            classroom.lock = {
+                                id: classroom!.lock!.id || '', // Handle undefined or null
+                                name: classroom!.lock!.name || '', // Handle undefined or null
+                                state: newLockState,
+                            };
+                        }
+                        return classroom;
+                    }
+                    // If it's not an instance of Classroom, return it as is
+                    return classroom;
+                }),
+            });
+        });
     }
 
     function updateClassroomState(classroomId: string, newLockState: boolean) {
 
-        console.log(classroomId, newLockState)
 
-        console.log(blocks)
-
-        const updatedClassrooms = findTheClassroomAndUpdateState(
-            blocks,
+        const updatedBlocks = findTheClassroomAndUpdateState(
+            blocksVar,
             classroomId,
             newLockState
         );
 
-        // Atualize as listas com os resultados
-        setBlocks(updatedClassrooms);
+
+        setBlocks(updatedBlocks);
     }
+
 
     return (
         <ClassroomContext.Provider value={{
