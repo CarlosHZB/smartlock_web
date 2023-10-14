@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const RoomsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    /* height: 100vh; */
     width: 78%;
     background-color: #D2D9DE;
 `
@@ -11,7 +10,7 @@ export const RoomsContainer = styled.div`
 export const HeaderRooms = styled.div`
     display: flex;
     flex-direction: row;
-    height: 90px;
+    height: 8vh;
     background-color: #263238;
     align-items: center;
 `
@@ -80,6 +79,9 @@ export const RoomsCardsContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 3rem;
+    height: 92vh;
+    overflow: scroll;
+    overflow-x: hidden;
 `
 
 export const Title = styled.h1`

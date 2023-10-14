@@ -162,8 +162,9 @@ export const ClassesEdit = styled.input`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-left: 25px;
+    margin: 0px 18px;
     margin-bottom: 20px;
+    padding: 0px 12px;
     background-color: #F2F8FD;
     border: 1px solid #2A567999;
     color: #263238;

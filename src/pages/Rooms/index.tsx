@@ -1,9 +1,9 @@
-import { RealtimeChannel } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Toaster } from "sonner";
 import ClassroomSelected from "../../components/Classroom/Classroom_selected";
+import LoadingBlocksSkeleton from "../../components/Skeletons/LoadingBlocksSkeleton";
 import { useClassroom } from "../../data/contexts";
 import { Classroom } from "../../data/models/classroom";
-import supabase from "../../data/services/supabase";
 import {
   CardRoomTitle,
   CardsTitles,
@@ -26,43 +26,7 @@ import {
 export default function Rooms() {
   const [sideOpt, setSideOpt] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<Classroom | null>(null);
-  const { blocks, getAllClassrooms, updateClassroomState } = useClassroom()
-  const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
-
-  useEffect(() => {
-    getAllClassrooms()
-  }, []);
-
-  useEffect(() => {
-    // Função para iniciar a assinatura
-    const startSubscription = async () => {
-      const newSubscription = supabase
-        .channel('lock-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'Lock',
-          },
-          (payload: any) => {
-            updateClassroomState(payload.new.classroom_id, payload.new.isClosed)
-          }
-        )
-        .subscribe();
-
-      setSubscription(newSubscription);
-    };
-
-    startSubscription();
-
-    // Função de limpeza para desconectar a assinatura quando o componente for desmontado
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
-  }, []);
+  const { loading, blocks } = useClassroom()
 
 
   const handleClick = (classroom: Classroom) => {
@@ -76,6 +40,7 @@ export default function Rooms() {
 
   return (
     <RoomsContainer>
+      <Toaster richColors />
       <HeaderRooms>
         <WrapSquares>
           <Squares color="#42BC37" />
@@ -86,34 +51,49 @@ export default function Rooms() {
         <WrapDropDowns>
           <DropDown width="200px">
             <option>Todos os blocos</option>
+            <option>Bloco A</option>
+            <option>Bloco B</option>
+            <option>Bloco C</option>
+            <option>Bloco D</option>
+            <option>Bloco E</option>
           </DropDown>
-          <DropDown width="100px">
+          <DropDown width="150px">
             <option>Todas</option>
+            <option>Abertas</option>
+            <option>Fechadas</option>
           </DropDown>
         </WrapDropDowns>
       </HeaderRooms>
       <RoomsCardsContainer>
         <Title>Salas</Title>
-        {blocks.map((block) => (
-          <RoomsCards key={`block-${block.name}`}>
-            <CardsTitles>{`Bloco ${block.name}`}</CardsTitles>
-            <CardRoomTitle>Salas</CardRoomTitle>
-            <WrapRooms>
-              {block.classrooms.map((sala) => (
-                <RoomsSquares
-                  key={sala.id}
-                  state={sala.lock != null ? sala.lock?.state : null}
-                  onClick={() => handleClick(sala)}
-                >
-                  {sala.name}
-                </RoomsSquares>
-              ))}
-            </WrapRooms>
-          </RoomsCards>
-        ))}
+        {loading ? (
+          <>
+            <LoadingBlocksSkeleton />
+            <LoadingBlocksSkeleton />
+            <LoadingBlocksSkeleton />
+            <LoadingBlocksSkeleton />
+            <LoadingBlocksSkeleton />
+          </>) :
+          blocks.map((block) => (
+            <RoomsCards key={`block-${block.name}`}>
+              <CardsTitles>{`Bloco ${block.name}`}</CardsTitles>
+              <CardRoomTitle>Salas</CardRoomTitle>
+              <WrapRooms>
+                {block.classrooms.map((sala) => (
+                  <RoomsSquares
+                    key={sala.id}
+                    state={sala.lock != null ? sala.lock?.state : null}
+                    onClick={() => handleClick(sala)}
+                  >
+                    {sala.name}
+                  </RoomsSquares>
+                ))}
+              </WrapRooms>
+            </RoomsCards>
+          ))}
       </RoomsCardsContainer>
       {sideOpt && selectedRoom !== null && (
-       <ClassroomSelected handleDispose={handleDispose} block="D" classroom={selectedRoom} />
+        <ClassroomSelected handleDispose={handleDispose} block={selectedRoom.block} classroom={selectedRoom} />
       )}
     </RoomsContainer>
   );

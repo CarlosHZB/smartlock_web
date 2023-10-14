@@ -26,11 +26,11 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
             <DrawerButtons onClick={() => handleButtonClick(2)} className={selectedTab === 2 ? "active" : ""}>
                 <FaChalkboardTeacher size={22} /> Professores
             </DrawerButtons>
-            <DrawerButtons onClick={() => handleButtonClick(3)} className={selectedTab === 3 ? "active" : ""}>
-                <PiStudentBold size={22} /> Alunos
-            </DrawerButtons>
-            <DrawerButtons onClick={() => handleButtonClick(4)} className={selectedTab === 4 ? "active" : ""}>
+            <DrawerButtons onClick={() => {}} className={selectedTab === 4 ? "active" : ""}>
                 <MdOutlineBook size={22} /> Aulas
+            </DrawerButtons>
+            <DrawerButtons onClick={() => {}} className={selectedTab === 3 ? "active" : ""}>
+                <PiStudentBold size={22} /> Alunos
             </DrawerButtons>
             <LogoutButton onClick={logout} >
                 <FiLogOut size={22} /> Sair

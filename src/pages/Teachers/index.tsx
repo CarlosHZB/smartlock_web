@@ -1,16 +1,26 @@
+import { CircularProgress } from "@mui/material";
+import { useState } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { GoPencil } from "react-icons/go";
 import { MdAdd } from "react-icons/md";
-import { RxTrash } from "react-icons/rx";
+import { Toaster, toast } from "sonner";
+import { useTeacher } from "../../data/contexts";
 import {
   AddTeacher,
-  ClassesEdit,
+  ClassTitle,
+  ClassesDiv,
   ClassesDivTitle,
+  ClassesEdit,
   ClassesLogo,
+  DateStyle,
+  DateTimeColumn,
   DisposeButton,
   EditButton,
   EmailStyle,
   EmailTitle,
   FirstRowOverlay,
   InformationColumn,
+  NextCLassesTitle,
   Overlay,
   OverlayMenu,
   OverlayTitle,
@@ -23,24 +33,25 @@ import {
   TeacherContainer,
   TeacherHeader,
   TeacherTitle,
-  TrashButton,
+  TimeStyle,
   WrapButton,
   WrapClassesLogo,
-  WrapDetailsButton,
-  NextCLassesTitle,
-  ClassesDiv,
-  ClassTitle,
-  DateTimeColumn,
-  DateStyle,
-  TimeStyle,
+  WrapDetailsButton
 } from "../../styles/Teachers";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { GoPencil } from "react-icons/go";
-import { useState } from "react";
 
 export default function Teachers() {
   const [addOpt, setAddOpt] = useState(false);
   const [detailsOpt, setDetailsOpt] = useState(false);
+  const { loadingNewTeacher, teachers, createNewTeacher } = useTeacher()
+
+  const initialFormData = {
+    name: '',
+    email: '',
+    prontuario: ''
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
 
   const handleClick = () => {
     setAddOpt(true);
@@ -55,10 +66,39 @@ export default function Teachers() {
   const handleDispose = () => {
     setAddOpt(false);
     setDetailsOpt(false);
+    // Clear the form data after submission
+    setFormData(initialFormData);
+  };
+
+  const handleInputChange = (event: { target: { name: any; value: any; }; }) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSaveTeacher = async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+
+    toast.promise(createNewTeacher(formData.name, formData.email, formData.prontuario), {
+      loading: 'Adicionando...',
+      success: (_) => {
+        setAddOpt(false);
+        setDetailsOpt(false);
+        setFormData(initialFormData);
+        return `O professor ${formData.name} foi adicionado`;
+      },
+      error: (_) => {
+        return `Ocorreu um erro ao adicionar o professor ${formData.name}`;
+      },
+    });
+
   };
 
   return (
     <TeacherContainer>
+      <Toaster richColors />
       <TeacherHeader>
         <TeacherTitle>Professores</TeacherTitle>
         <AddTeacher onClick={handleClick}>
@@ -71,31 +111,18 @@ export default function Teachers() {
         <TableTitleRows>Aulas</TableTitleRows>
         <TableTitleRows>Prontuário</TableTitleRows>
       </TableHeader>
-      <TableRow>
-        <TableRowContentName onClick={handleClickDetails}>
-          Murilo Varges
-        </TableRowContentName>
-        <TableRowContent>murilovarges@gmail.com</TableRowContent>
-        <TableRowContent>X</TableRowContent>
-        <TableRowContent>BI300XXXX</TableRowContent>
-      </TableRow>
-      <TableRow>
-        <TableRowContentName onClick={handleClickDetails}>
-          Murilo Varges
-        </TableRowContentName>
-        <TableRowContent>murilovarges@gmail.com</TableRowContent>
-        <TableRowContent>X</TableRowContent>
-        <TableRowContent>BI300XXXX</TableRowContent>
-      </TableRow>
-      <TableRow>
-        <TableRowContentName onClick={handleClickDetails}>
-          Murilo Varges
-        </TableRowContentName>
-        <TableRowContent>murilovarges@gmail.com</TableRowContent>
-        <TableRowContent>X</TableRowContent>
-        <TableRowContent>BI300XXXX</TableRowContent>
-      </TableRow>
+      {teachers.map((teacher) => (
+        <TableRow key={teacher.id}>
+          <TableRowContentName onClick={handleClickDetails}>
+            {teacher.name}
+          </TableRowContentName>
+          <TableRowContent>{teacher.email}</TableRowContent>
+          <TableRowContent>
 
+          </TableRowContent>
+          <TableRowContent>{teacher.code}</TableRowContent>
+        </TableRow>
+      ))}
       {addOpt && (
         <Overlay>
           <OverlayMenu>
@@ -105,14 +132,37 @@ export default function Teachers() {
                 <AiOutlineCloseCircle size={34} />
               </DisposeButton>
             </FirstRowOverlay>
-            <ClassesDivTitle>Prontuário</ClassesDivTitle>
-            <ClassesEdit />
             <ClassesDivTitle>Nome completo</ClassesDivTitle>
-            <ClassesEdit />
+            <ClassesEdit
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
             <ClassesDivTitle>Email</ClassesDivTitle>
-            <ClassesEdit />
+            <ClassesEdit
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+            <ClassesDivTitle>Prontuário</ClassesDivTitle>
+            <ClassesEdit
+              type="text"
+              name="prontuario"
+              value={formData.prontuario}
+              onChange={handleInputChange}
+            />
             <WrapButton>
-              <SaveButton onClick={handleDispose}>Salvar</SaveButton>
+              <SaveButton onClick={handleSaveTeacher}>
+                {loadingNewTeacher &&
+                  (<CircularProgress
+                    size={16}
+                    sx={{
+                      color: "white",
+                    }} />)}
+                Salvar
+              </SaveButton>
             </WrapButton>
           </OverlayMenu>
         </Overlay>
@@ -124,22 +174,22 @@ export default function Teachers() {
             <FirstRowOverlay>
               <OverlayTitle>Murilo Varges</OverlayTitle>
               <WrapDetailsButton>
-                <EditButton> <GoPencil size={34}/> </EditButton>
+                <EditButton> <GoPencil size={34} /> </EditButton>
                 <DisposeButton onClick={handleDispose}>
-                    <AiOutlineCloseCircle size={34} />
+                  <AiOutlineCloseCircle size={34} />
                 </DisposeButton>
               </WrapDetailsButton>
             </FirstRowOverlay>
             <InformationColumn>
-                <EmailTitle>Email</EmailTitle>
-                <EmailStyle>carlosziliolibraga@hotmail.com</EmailStyle>
+              <EmailTitle>Email</EmailTitle>
+              <EmailStyle>carlosziliolibraga@hotmail.com</EmailStyle>
             </InformationColumn>
             <InformationColumn>
-                <EmailTitle>Aulas</EmailTitle>
-                <WrapClassesLogo>
+              <EmailTitle>Aulas</EmailTitle>
+              <WrapClassesLogo>
                 <ClassesLogo>ROBO9</ClassesLogo>
                 <ClassesLogo>REDE9</ClassesLogo>
-                </WrapClassesLogo>
+              </WrapClassesLogo>
             </InformationColumn>
             <NextCLassesTitle>Próximas aulas</NextCLassesTitle>
             <ClassesDiv>
