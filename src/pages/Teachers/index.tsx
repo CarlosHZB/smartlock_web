@@ -3,10 +3,11 @@ import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { GoPencil } from "react-icons/go";
 import { MdAdd } from "react-icons/md";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useTeacher } from "../../data/contexts";
 import {
   AddTeacher,
+  ClassContent,
   ClassTitle,
   ClassesDiv,
   ClassesDivTitle,
@@ -98,7 +99,6 @@ export default function Teachers() {
 
   return (
     <TeacherContainer>
-      <Toaster richColors />
       <TeacherHeader>
         <TeacherTitle>Professores</TeacherTitle>
         <AddTeacher onClick={handleClick}>
@@ -118,7 +118,13 @@ export default function Teachers() {
           </TableRowContentName>
           <TableRowContent>{teacher.email}</TableRowContent>
           <TableRowContent>
-
+            {
+              teacher.classes.map((classU) => (
+                <ClassContent key={classU.id}>
+                  {classU.name}
+                </ClassContent>
+              ))
+            }
           </TableRowContent>
           <TableRowContent>{teacher.code}</TableRowContent>
         </TableRow>

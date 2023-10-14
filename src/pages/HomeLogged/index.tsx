@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "sonner";
 import Drawer from "../../components/Drawer/Drawer";
 import {
   HomeLoggedContainer
@@ -27,6 +28,7 @@ export default function HomeLogged() {
 
   return (
     <HomeLoggedContainer>
+      <Toaster richColors />
       <Drawer selectedTab={selectedTab} handleButtonClick={handleButtonClick} />
       {pages[selectedTab - 1]}
     </HomeLoggedContainer>

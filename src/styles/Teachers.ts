@@ -93,6 +93,17 @@ export const TableRowContent = styled.h1`
     font-weight: 700;
 `
 
+export const ClassContent = styled.div`
+    padding: 4px 10px;
+    background-color: #2A5679;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: white;
+    font-size: 11px;
+`
+
 export const TrashButton = styled.button`
     border: none;
     color: #F24E1E;

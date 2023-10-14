@@ -42,6 +42,7 @@ class TeacherRepositoryImpl implements TeacherRepository {
             const jsonData = response.data;
 
             if (Array.isArray(jsonData)) {
+                // console.log(jsonData)
                 // Mapear o JSON para instâncias da classe Classroom
                 const teachers = jsonData.map((teacherData: any) =>
                     convertJsonToTeacher(teacherData)

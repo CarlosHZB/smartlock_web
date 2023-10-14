@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Toaster } from "sonner";
 import ClassroomSelected from "../../components/Classroom/Classroom_selected";
 import LoadingBlocksSkeleton from "../../components/Skeletons/LoadingBlocksSkeleton";
 import { useClassroom } from "../../data/contexts";
@@ -40,7 +39,6 @@ export default function Rooms() {
 
   return (
     <RoomsContainer>
-      <Toaster richColors />
       <HeaderRooms>
         <WrapSquares>
           <Squares color="#42BC37" />

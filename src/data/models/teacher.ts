@@ -1,9 +1,12 @@
+import { Class, convertJsonToClass } from "./class";
+
 export interface TeacherProps {
     id?: string;
     name: string;
     email: string;
     code: string;
     createdAt: Date;
+    classes: Class[]
 }
 
 export class Teacher {
@@ -52,6 +55,14 @@ export class Teacher {
     set createdAt(value: Date) {
         this.props.createdAt = value;
     }
+
+    get classes(): Class[] {
+        return this.props.classes;
+    }
+
+    set classes(value: Class[]) {
+        this.props.classes = value;
+    }
 }
 
 export function convertJsonToTeacher(jsonData: any): Teacher {
@@ -61,6 +72,7 @@ export function convertJsonToTeacher(jsonData: any): Teacher {
         email: jsonData.email,
         code: jsonData.code,
         createdAt: jsonData.created_at == null ? new Date() : new Date(jsonData.created_at),
+        classes: jsonData.classes != null ? jsonData.classes.map((classData: any) => convertJsonToClass(classData)) : []
     };
 
     return new Teacher(teacherProps);
