@@ -10,9 +10,11 @@ interface TeacherContextProps {
 }
 
 interface TeacherContextType {
+    loading: boolean,
     loadingNewTeacher: boolean,
     teachers: Teacher[];
     getAllTeachers(): Promise<void>;
+    deleteTeacher(id: string): Promise<void>;
     createNewTeacher(name: string, email: string, code: string): Promise<void>;
 }
 
@@ -22,6 +24,7 @@ export const TeacherProvider: React.FC<TeacherContextProps> = ({ children }) => 
     const provider = useAPI();
     const teacherRepository = new TeacherRepositoryImpl(provider)
 
+    const [loading, setLoading] = useState(false)
     const [loadingNewTeacher, setLoadingNewTeacher] = useState(false)
     const [teachers, setTeachers] = useState<Teacher[]>([])
 
@@ -32,10 +35,26 @@ export const TeacherProvider: React.FC<TeacherContextProps> = ({ children }) => 
 
     async function getAllTeachers(): Promise<void> {
         try {
+            setLoading(true)
             const teachersList = await teacherRepository.getAllTeachers()
             setTeachers(teachersList)
         } catch (error) {
             throw error
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function deleteTeacher(id: string): Promise<void> {
+
+        setLoadingNewTeacher(true)
+        try {
+            await teacherRepository.deleteTeacher(id)
+            getAllTeachers()
+        } catch (error: any) {
+            throw error.response.data.message
+        } finally {
+            setLoadingNewTeacher(false)
         }
     }
 
@@ -68,7 +87,7 @@ export const TeacherProvider: React.FC<TeacherContextProps> = ({ children }) => 
     }
 
     return (
-        <TeacherContext.Provider value={{ loadingNewTeacher, teachers, getAllTeachers, createNewTeacher }}>
+        <TeacherContext.Provider value={{ loading, loadingNewTeacher, teachers, getAllTeachers, createNewTeacher, deleteTeacher }}>
             {children}
         </TeacherContext.Provider>
     );

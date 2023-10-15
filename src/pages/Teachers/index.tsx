@@ -4,10 +4,12 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { GoPencil } from "react-icons/go";
 import { MdAdd } from "react-icons/md";
 import { toast } from "sonner";
+import { DeleteTeacherDialog } from "../../components/Dialogs/DeleteTeacherDialog";
+import { TableTeachers } from "../../components/Teachers/CustomTable";
 import { useTeacher } from "../../data/contexts";
+import { Teacher } from "../../data/models/teacher";
 import {
   AddTeacher,
-  ClassContent,
   ClassTitle,
   ClassesDiv,
   ClassesDivTitle,
@@ -26,11 +28,6 @@ import {
   OverlayMenu,
   OverlayTitle,
   SaveButton,
-  TableHeader,
-  TableRow,
-  TableRowContent,
-  TableRowContentName,
-  TableTitleRows,
   TeacherContainer,
   TeacherHeader,
   TeacherTitle,
@@ -43,7 +40,10 @@ import {
 export default function Teachers() {
   const [addOpt, setAddOpt] = useState(false);
   const [detailsOpt, setDetailsOpt] = useState(false);
-  const { loadingNewTeacher, teachers, createNewTeacher } = useTeacher()
+  const [dialogDeleteOpen, setDialogDelete] = useState(false);
+  const [indexDeleteSelected, setIndexDeleteSelected] = useState<number | null>(null);
+  const [teacherSelected, setTeacherSelected] = useState<Teacher | null>(null);
+  const { loading, loadingNewTeacher, teachers, getAllTeachers, createNewTeacher, deleteTeacher } = useTeacher()
 
   const initialFormData = {
     name: '',
@@ -59,7 +59,8 @@ export default function Teachers() {
     setDetailsOpt(false);
   };
 
-  const handleClickDetails = () => {
+  const handleClickDetails = (teacher: Teacher) => {
+    setTeacherSelected(teacher)
     setDetailsOpt(true);
     setAddOpt(false);
   };
@@ -67,7 +68,6 @@ export default function Teachers() {
   const handleDispose = () => {
     setAddOpt(false);
     setDetailsOpt(false);
-    // Clear the form data after submission
     setFormData(initialFormData);
   };
 
@@ -94,134 +94,141 @@ export default function Teachers() {
         return `Ocorreu um erro ao adicionar o professor ${formData.name}`;
       },
     });
+  };
 
+  const handleDeleteTeacher = async (index: number) => {
+
+    setDialogDelete(false)
+
+    toast.promise(deleteTeacher(teachers[index].id!), {
+      loading: 'Deletando...',
+      success: (_) => {
+        setIndexDeleteSelected(null)
+        return `O professor ${teachers[index].name} foi deletado`;
+      },
+      error: (_) => {
+        return `Ocorreu um erro ao deletar o professor ${teachers[index].name}`;
+      },
+    });
   };
 
   return (
-    <TeacherContainer>
-      <TeacherHeader>
-        <TeacherTitle>Professores</TeacherTitle>
-        <AddTeacher onClick={handleClick}>
-          Adicionar <MdAdd />{" "}
-        </AddTeacher>
-      </TeacherHeader>
-      <TableHeader>
-        <TableTitleRows>Nome</TableTitleRows>
-        <TableTitleRows>Email</TableTitleRows>
-        <TableTitleRows>Aulas</TableTitleRows>
-        <TableTitleRows>Prontuário</TableTitleRows>
-      </TableHeader>
-      {teachers.map((teacher) => (
-        <TableRow key={teacher.id}>
-          <TableRowContentName onClick={handleClickDetails}>
-            {teacher.name}
-          </TableRowContentName>
-          <TableRowContent>{teacher.email}</TableRowContent>
-          <TableRowContent>
-            {
-              teacher.classes.map((classU) => (
-                <ClassContent key={classU.id}>
-                  {classU.name}
-                </ClassContent>
-              ))
-            }
-          </TableRowContent>
-          <TableRowContent>{teacher.code}</TableRowContent>
-        </TableRow>
-      ))}
-      {addOpt && (
-        <Overlay>
-          <OverlayMenu>
-            <FirstRowOverlay>
-              <OverlayTitle>Adicionar novo professor</OverlayTitle>
-              <DisposeButton onClick={handleDispose}>
-                <AiOutlineCloseCircle size={34} />
-              </DisposeButton>
-            </FirstRowOverlay>
-            <ClassesDivTitle>Nome completo</ClassesDivTitle>
-            <ClassesEdit
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-            <ClassesDivTitle>Email</ClassesDivTitle>
-            <ClassesEdit
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <ClassesDivTitle>Prontuário</ClassesDivTitle>
-            <ClassesEdit
-              type="text"
-              name="prontuario"
-              value={formData.prontuario}
-              onChange={handleInputChange}
-            />
-            <WrapButton>
-              <SaveButton onClick={handleSaveTeacher}>
-                {loadingNewTeacher &&
-                  (<CircularProgress
-                    size={16}
-                    sx={{
-                      color: "white",
-                    }} />)}
-                Salvar
-              </SaveButton>
-            </WrapButton>
-          </OverlayMenu>
-        </Overlay>
-      )}
-
-      {detailsOpt && (
-        <Overlay>
-          <OverlayMenu>
-            <FirstRowOverlay>
-              <OverlayTitle>Murilo Varges</OverlayTitle>
-              <WrapDetailsButton>
-                <EditButton> <GoPencil size={34} /> </EditButton>
+    <>
+      <DeleteTeacherDialog onClose={() => setDialogDelete(false)} onDelete={handleDeleteTeacher} open={dialogDeleteOpen} index={indexDeleteSelected!} />
+      <TeacherContainer>
+        <TeacherHeader>
+          <TeacherTitle>Professores</TeacherTitle>
+          <AddTeacher onClick={handleClick}>
+            Adicionar <MdAdd />{" "}
+          </AddTeacher>
+        </TeacherHeader>
+        <TableTeachers
+          data={teachers}
+          onClickDetails={handleClickDetails}
+          isExpanded={!addOpt && !detailsOpt}
+          loading={loading}
+          onClickDelete={(index) => {
+            setIndexDeleteSelected(index)
+            setDialogDelete(true)
+          }}
+        />
+        {addOpt && (
+          <Overlay>
+            <OverlayMenu>
+              <FirstRowOverlay>
+                <OverlayTitle>Adicionar novo professor</OverlayTitle>
                 <DisposeButton onClick={handleDispose}>
                   <AiOutlineCloseCircle size={34} />
                 </DisposeButton>
-              </WrapDetailsButton>
-            </FirstRowOverlay>
-            <InformationColumn>
-              <EmailTitle>Email</EmailTitle>
-              <EmailStyle>carlosziliolibraga@hotmail.com</EmailStyle>
-            </InformationColumn>
-            <InformationColumn>
-              <EmailTitle>Aulas</EmailTitle>
-              <WrapClassesLogo>
-                <ClassesLogo>ROBO9</ClassesLogo>
-                <ClassesLogo>REDE9</ClassesLogo>
-              </WrapClassesLogo>
-            </InformationColumn>
-            <NextCLassesTitle>Próximas aulas</NextCLassesTitle>
-            <ClassesDiv>
-              <ClassTitle>PPJE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>16:00 - 17:15</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <ClassesDiv>
-              <ClassTitle>PPJE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>16:00 - 17:15</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-            <ClassesDiv>
-              <ClassTitle>PPJE6</ClassTitle>
-              <DateTimeColumn>
-                <DateStyle>20/05/2023</DateStyle>
-                <TimeStyle>16:00 - 17:15</TimeStyle>
-              </DateTimeColumn>
-            </ClassesDiv>
-          </OverlayMenu>
-        </Overlay>
-      )}
-    </TeacherContainer>
+              </FirstRowOverlay>
+              <ClassesDivTitle>Nome completo</ClassesDivTitle>
+              <ClassesEdit
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+              <ClassesDivTitle>Email</ClassesDivTitle>
+              <ClassesEdit
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+              <ClassesDivTitle>Prontuário</ClassesDivTitle>
+              <ClassesEdit
+                type="text"
+                name="prontuario"
+                value={formData.prontuario}
+                onChange={handleInputChange}
+              />
+              <WrapButton>
+                <SaveButton onClick={handleSaveTeacher}>
+                  {loadingNewTeacher &&
+                    (<CircularProgress
+                      size={16}
+                      sx={{
+                        color: "white",
+                      }} />)}
+                  Salvar
+                </SaveButton>
+              </WrapButton>
+            </OverlayMenu>
+          </Overlay>
+        )}
+
+        {(detailsOpt && teacherSelected) && (
+          <Overlay>
+            <OverlayMenu>
+              <FirstRowOverlay>
+                <OverlayTitle>{teacherSelected?.name}</OverlayTitle>
+                <WrapDetailsButton>
+                  <EditButton> <GoPencil size={34} /> </EditButton>
+                  <DisposeButton onClick={handleDispose}>
+                    <AiOutlineCloseCircle size={34} />
+                  </DisposeButton>
+                </WrapDetailsButton>
+              </FirstRowOverlay>
+              <InformationColumn>
+                <EmailTitle>Email</EmailTitle>
+                <EmailStyle>{teacherSelected?.email}</EmailStyle>
+              </InformationColumn>
+              <InformationColumn>
+                <EmailTitle>Aulas</EmailTitle>
+                <WrapClassesLogo>
+                  {
+                    teacherSelected?.classes.map((classU) => (
+                      <ClassesLogo key={classU.id} >{classU.name}</ClassesLogo>
+                    ))
+                  }
+                </WrapClassesLogo>
+              </InformationColumn>
+              <NextCLassesTitle>Próximas aulas</NextCLassesTitle>
+              <ClassesDiv>
+                <ClassTitle>PPJE6</ClassTitle>
+                <DateTimeColumn>
+                  <DateStyle>20/05/2023</DateStyle>
+                  <TimeStyle>16:00 - 17:15</TimeStyle>
+                </DateTimeColumn>
+              </ClassesDiv>
+              <ClassesDiv>
+                <ClassTitle>PPJE6</ClassTitle>
+                <DateTimeColumn>
+                  <DateStyle>20/05/2023</DateStyle>
+                  <TimeStyle>16:00 - 17:15</TimeStyle>
+                </DateTimeColumn>
+              </ClassesDiv>
+              <ClassesDiv>
+                <ClassTitle>PPJE6</ClassTitle>
+                <DateTimeColumn>
+                  <DateStyle>20/05/2023</DateStyle>
+                  <TimeStyle>16:00 - 17:15</TimeStyle>
+                </DateTimeColumn>
+              </ClassesDiv>
+            </OverlayMenu>
+          </Overlay>
+        )}
+      </TeacherContainer>
+    </>
   );
 }

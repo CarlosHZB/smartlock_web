@@ -16,6 +16,15 @@ class TeacherRepositoryImpl implements TeacherRepository {
         this.api = provider;
     }
 
+    async deleteTeacher(id: string): Promise<void> {
+        try {
+            await this.api.remove(`/user/${id}`);
+        } catch (error) {
+            console.error(`Erro ao buscar professores:`, error);
+            throw error;
+        }
+    }
+
     async addNewTeacher(name: string, email: string, code: string): Promise<Teacher> {
         try {
             const response = await this.api.post(`/user`,

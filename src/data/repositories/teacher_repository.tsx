@@ -5,6 +5,7 @@ import { Teacher } from "../models/teacher";
 interface TeacherRepository {
     getAllTeachers(): Promise<Teacher[]>
     addNewTeacher(name: string, email: string, code: string): Promise<Teacher>
+    deleteTeacher(id: string): Promise<void>
 }
 
 export default TeacherRepository;

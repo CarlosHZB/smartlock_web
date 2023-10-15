@@ -11,6 +11,7 @@ export interface ApiContextType {
     apiInstance: AxiosInstance;
     get(path: string): Promise<any>;
     post(path: string, body: any): Promise<any>;
+    remove(path: string): Promise<any>;
 }
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ const ApiContext = createContext<ApiContextType | undefined>(undefined);
 export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
     const apiInstance = api.create({
         baseURL: 'https://web-production-4b19.up.railway.app',
+        // baseURL: 'http://localhost:3306',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -31,8 +33,12 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
         return apiInstance.post(path, body)
     }
 
+    async function remove(path: string): Promise<any> {
+        return apiInstance.delete(path)
+    }
+
     return (
-        <ApiContext.Provider value={{ apiInstance, get, post }}>
+        <ApiContext.Provider value={{ apiInstance, get, post, remove }}>
             {children}
         </ApiContext.Provider>
     );

@@ -4,12 +4,14 @@ export const TeacherContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 78%;
+    width: 90%;
+    padding: 0px 2rem;
     background-color: #D2D9DE;
 `
 
 export const TeacherHeader = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -21,7 +23,6 @@ export const TeacherTitle = styled.h1`
     font-family: 'Montserrat';
     font-size: 25px;
     font-weight: 700;
-    margin-left: 3rem;
 `
 
 export const AddTeacher = styled.button`
@@ -30,7 +31,6 @@ export const AddTeacher = styled.button`
     font-family: 'Montserrat';
     font-size: 20px;
     font-weight: 100;
-    margin-right: 3rem;
     color: white;
     border: none;
     cursor: pointer;
@@ -95,7 +95,9 @@ export const TableRowContent = styled.h1`
 
 export const ClassContent = styled.div`
     padding: 4px 10px;
+    width: 32px;
     background-color: #2A5679;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -115,9 +117,6 @@ export const Overlay = styled.div`
     right: 50px;
     width: 38%;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, 0.8); */
-    background-color: #D2D9DE;
-    /* z-index: 999; */
     color: white;
     display: flex;
     align-items: flex-start;
@@ -162,7 +161,7 @@ export const EditButton = styled.button`
 
 export const OverlayTitle = styled.h1`
     color: #263238;
-    margin-left: 1.5em;
+    margin-left: 1rem;
     font-family: 'Montserrat';
     font-size: 20px;
     font-weight: 700;
@@ -245,18 +244,16 @@ export const EmailStyle = styled.h1`
 
 export const ClassesLogo = styled.div`
     display: flex;
-    width: 30px;
+    width: 52px;
     background-color: #2A5679;
     font-family: 'Montserrat';
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     color: white;
     border: none;
-    border-radius: 7px;
+    border-radius: 4px;
     padding: 5px;
-    padding-right: 25px;
     margin-right: 10px;
-    padding-left: 25px;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
