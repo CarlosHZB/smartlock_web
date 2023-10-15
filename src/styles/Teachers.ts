@@ -18,6 +18,13 @@ export const TeacherHeader = styled.div`
     margin-top: 7px;
 `
 
+export const InfoTable = styled.p`
+    font-size: 11px;
+    font-weight: 300;
+    color: #263238A7;
+    margin: 0px;
+`
+
 export const TeacherTitle = styled.h1`
     color: #263238;
     font-family: 'Montserrat';

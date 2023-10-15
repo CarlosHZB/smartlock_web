@@ -12,6 +12,7 @@ import {
     ClassHeader,
     ClassTitle
 } from "../../styles/Class";
+import { InfoTable } from "../../styles/Teachers";
 
 export default function Classes() {
     const [addOpt, setAddOpt] = useState(false);
@@ -98,7 +99,8 @@ export default function Classes() {
                         Adicionar <MdAdd />{" "}
                     </AddClass>
                 </ClassHeader>
-                
+
+                <InfoTable>Clique no nome para expandir as informações de uma aula</InfoTable>
                 <TableClasses
                     data={classes}
                     onClickDetails={handleClickDetails}

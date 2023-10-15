@@ -18,6 +18,7 @@ import {
   EmailStyle,
   EmailTitle,
   FirstRowOverlay,
+  InfoTable,
   InformationColumn,
   Overlay,
   OverlayMenu,
@@ -116,6 +117,7 @@ export default function Teachers() {
             Adicionar <MdAdd />{" "}
           </AddTeacher>
         </TeacherHeader>
+        <InfoTable>Clique no nome para expandir as informações o professor</InfoTable>
         <TableTeachers
           data={teachers}
           onClickDetails={handleClickDetails}
