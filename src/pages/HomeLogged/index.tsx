@@ -5,7 +5,8 @@ import Drawer from "../../components/Drawer/Drawer";
 import {
   HomeLoggedContainer
 } from "../../styles/HomeLogged";
-import Class from "../Class";
+import Classes from "../Class";
+import Locks from "../Locks";
 import Rooms from "../Rooms";
 import Students from "../Students";
 import Teachers from "../Teachers";
@@ -22,8 +23,9 @@ export default function HomeLogged() {
   const pages = [
     <Rooms />,
     <Teachers />,
+    <Classes />,
+    <Locks />,
     <Students />,
-    <Class />
   ]
 
   return (

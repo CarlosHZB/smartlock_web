@@ -1,9 +1,11 @@
+import { Access, convertJsonToAccess } from "./access";
+
 export interface ClassroomProps {
   id: string;
   block: string;
   name: string;
   lock?: { id: string; state: boolean; name: string };
-  access: any[];
+  access: Access[];
 }
 
 
@@ -38,11 +40,11 @@ export class Classroom {
     this.props.name = value;
   }
 
-  get access(): any[] {
+  get access(): Access[] {
     return this.props.access;
   }
 
-  set access(value: any[]) {
+  set access(value: Access[]) {
     this.props.access = value;
   }
 
@@ -61,7 +63,7 @@ export function convertJsonToClassroom(jsonData: any): Classroom {
     block: jsonData.block,
     name: jsonData.name,
     lock: jsonData.lock,
-    access: jsonData.access,
+    access: jsonData.access != null ? jsonData.access.map((accessData: any) => convertJsonToAccess(accessData)) : []
   };
 
   return new Classroom(classroomProps);

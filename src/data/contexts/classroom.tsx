@@ -53,6 +53,7 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
                         table: 'Lock',
                     },
                     (payload: any) => {
+                        console.log(payload.new)
                         updateClassroomState(payload.new.classroom_id, payload.new.isClosed)
                     }
                 )

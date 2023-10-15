@@ -4,6 +4,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { MdOutlineBook } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
+import { RiDoorLockLine } from "react-icons/ri";
 import { SiGoogleclassroom } from "react-icons/si";
 import { useUser } from '../../data/contexts';
 import { DrawerButtons, DrawerTitle, LeftDrawer, LogoutButton, UserInfo, UserInfoContainer } from '../../styles/HomeLogged';
@@ -26,10 +27,13 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
             <DrawerButtons onClick={() => handleButtonClick(2)} className={selectedTab === 2 ? "active" : ""}>
                 <FaChalkboardTeacher size={22} /> Professores
             </DrawerButtons>
-            <DrawerButtons onClick={() => {}} className={selectedTab === 4 ? "active" : ""}>
+            <DrawerButtons onClick={() => handleButtonClick(3)} className={selectedTab === 3 ? "active" : ""}>
                 <MdOutlineBook size={22} /> Aulas
             </DrawerButtons>
-            <DrawerButtons onClick={() => {}} className={selectedTab === 3 ? "active" : ""} style={{opacity: '15%'}} >
+            <DrawerButtons onClick={() => {}} className={selectedTab === 4 ? "active" : ""}>
+                <RiDoorLockLine size={22} /> Fechaduras
+            </DrawerButtons>
+            <DrawerButtons onClick={() => {}} className={selectedTab === 5 ? "active" : ""} style={{opacity: '15%'}} >
                 <PiStudentBold size={22} /> Alunos
             </DrawerButtons>
             <LogoutButton onClick={logout} >

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const TeacherContainer = styled.div`
+export const ClassContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -9,7 +9,7 @@ export const TeacherContainer = styled.div`
     background-color: #D2D9DE;
 `
 
-export const TeacherHeader = styled.div`
+export const ClassHeader = styled.div`
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -18,14 +18,7 @@ export const TeacherHeader = styled.div`
     margin-top: 7px;
 `
 
-export const TeacherTitle = styled.h1`
-    color: #263238;
-    font-family: 'Montserrat';
-    font-size: 25px;
-    font-weight: 700;
-`
-
-export const AddTeacher = styled.button`
+export const AddClass = styled.button`
     display: flex;
     background-color: #263238;
     font-family: 'Montserrat';
@@ -116,7 +109,6 @@ export const Overlay = styled.div`
     top: 90px;
     right: 50px;
     width: 38%;
-    height: 100%;
     color: white;
     display: flex;
     align-items: flex-start;
@@ -126,12 +118,12 @@ export const Overlay = styled.div`
 export const OverlayMenu = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: 85px;
     margin-left: 30px;
     width: 90%;
     height: 50%;
     background-color: #F2F8FD;
     border-radius: 10px;
+    padding-bottom: 1rem;
 `
 
 export const FirstRowOverlay = styled.div`
@@ -140,7 +132,6 @@ export const FirstRowOverlay = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 8px;
-    margin-bottom: 20px;
     width: 95%;
 `
 
@@ -173,7 +164,6 @@ export const ClassesEdit = styled.input`
     align-items: center;
     justify-content: space-between;
     margin: 0px 18px;
-    margin-bottom: 20px;
     padding: 0px 12px;
     background-color: #F2F8FD;
     border: 1px solid #2A567999;
@@ -184,11 +174,26 @@ export const ClassesEdit = styled.input`
 `
 export const ClassesDivTitle = styled.h1`
     color: #263238;
+    margin-top: 12px;
     padding-left: 1rem;
     font-family: 'Montserrat';
     font-size: 12px;
     font-weight: 300;
 `
+
+export const TeacherSelect = styled.select`
+  padding: 4px 12px;
+  margin: 0px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #FFF;
+  color: #2A5679;
+`;
+
+export const TeacherOption = styled.option`
+  background-color: #FFF;
+  color: #2A5679;
+`;
 
 export const WrapButton = styled.div`
     display: flex;
@@ -223,22 +228,46 @@ export const InformationColumn = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    gap: 2px;
+    margin-bottom: 8px;
 `
 
-export const EmailTitle = styled.h1`
-    margin-top: 0;
+export const EmailTitle = styled.p`
+    margin: 0px;
     font-family: 'Montserrat';
     font-size: 15px;
     font-weight: 100;
     color: #2A567966;
 `
 
-export const EmailStyle = styled.h1`
-    margin-top: 0;
+export const EmailStyle = styled.p`
+    margin: 0px;
     font-family: 'Montserrat';
     font-size: 15px;
     font-weight: 500;
     color: #2A5679;
+`
+
+export const AccessWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem;
+    height: 200px;
+    padding-right: 12px;
+    padding-bottom: 1rem;
+    overflow: scroll;
+    overflow-x: hidden;
+`
+export const AccessItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2A5679;
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    border-radius: 4px;
+    padding: 4px 12px;
 `
 
 export const ClassesLogo = styled.div`
@@ -286,11 +315,10 @@ export const ClassesDiv = styled.div`
 `
 
 export const ClassTitle = styled.h1`
-    margin-left: 12px;
+    color: #263238;
     font-family: 'Montserrat';
-    font-size: 15px;
-    font-weight: 500;
-    color: #2A5679;
+    font-size: 25px;
+    font-weight: 700;
 `
 
 export const DateTimeColumn = styled.div`

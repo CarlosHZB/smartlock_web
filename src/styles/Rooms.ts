@@ -36,8 +36,8 @@ interface SquareProps {
 export const Squares = styled.div<SquareProps>`
    margin-left: 3rem;
    background-color: ${(props) => props.color};
-   height: 35px;
-   width: 35px;
+   height: 30px;
+   width: 30px;
    border-radius: 5px;
    border: none;
 `
@@ -45,7 +45,7 @@ export const Squares = styled.div<SquareProps>`
 export const SquareTexts = styled.h1`
     color: white;
     font-family: 'Montserrat';
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 100;
     margin-left: 0.5rem;
 `
@@ -60,12 +60,11 @@ export const DropDown = styled.select<DropProps>`
     border: none;
     border-radius: 6px;
     padding: 8px;
-    font-size: 16px;
-    text-align: center;
+    text-align: start;
     width: ${(props) => props.width};
     font-family: 'Montserrat';
-    font-size: 18px;
-    font-weight: 100;
+    font-size: 16px;
+    font-weight: 300;
 
     option {
     &:hover {
@@ -243,13 +242,37 @@ export const ClassName = styled.h1`
     color: #2A5679;
 `
 
-export const NextCLassesTitle = styled.h1`
+export const NextCLassesTitle = styled.p`
     padding-top: 2px;
     margin-left: 20px;
     font-family: 'Montserrat';
     font-size: 15px;
     font-weight: 500;
     color: #263238;
+`
+
+export const LastAccess = styled.div`
+    height: 60%;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    /* This targets Webkit-based browsers (e.g., Chrome, Safari) */
+    /* You can add similar rules for Firefox and other browsers if needed */
+    &::-webkit-scrollbar {
+        width: 8px; /* Adjust the width as needed */
+        background-color: transparent; /* Sets the scroll bar background to transparent */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #2A5679; /* Sets the scroll bar indicator color to blue */
+        border-radius: 5px; /* Adds rounded corners to the indicator */
+    }
+
+    /* Optional: To style the track (the area behind the indicator) */
+    &::-webkit-scrollbar-track {
+        background: transparent; /* You can adjust this as needed */
+    }
+
 `
 
 export const ClassesDiv = styled.div`
@@ -277,6 +300,7 @@ export const ClassTitle = styled.h1`
 export const DateTimeColumn = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     margin-right: 12px;
 `
 

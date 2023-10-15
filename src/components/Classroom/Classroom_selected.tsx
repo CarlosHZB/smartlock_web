@@ -1,5 +1,7 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Classroom } from "../../data/models/classroom";
+import { formatDateToDDMMYYYY } from "../../helpers/date";
+import { formatDateToHHMM } from "../../helpers/time";
 import {
     ClassAtMoment,
     ClassName,
@@ -10,6 +12,7 @@ import {
     DisposeButton,
     FirstRowOverlay,
     InformationColumn,
+    LastAccess,
     NextCLassesTitle,
     OpenOrClosedTag,
     Overlay,
@@ -38,53 +41,36 @@ const ClassroomSelected: React.FC<ClassroomSelectedProps> = ({ handleDispose, cl
                     </OpenOrClosedTag>
                 </FirstRowOverlay>
                 <OverlayTitle>Sala {block}{classroom.name}</OverlayTitle>
-                <SecondRow>
-                    <InformationColumn>
-                        <ClassAtMoment>Aula No Momento</ClassAtMoment>
-                        <ClassName>ProjetoIntegrador ll</ClassName>
-                    </InformationColumn>
-                    <InformationColumn>
-                        <ClassAtMoment>Professor</ClassAtMoment>
-                        <ClassName>Helen De Freitas</ClassName>
-                    </InformationColumn>
-                </SecondRow>
-                <NextCLassesTitle>Próximas aulas nessa sala</NextCLassesTitle>
-                <ClassesDiv>
-                    <ClassTitle>PPJE6</ClassTitle>
-                    <DateTimeColumn>
-                        <DateStyle>20/05/2023</DateStyle>
-                        <TimeStyle>16:00 - 17:15</TimeStyle>
-                    </DateTimeColumn>
-                </ClassesDiv>
-                <ClassesDiv>
-                    <ClassTitle>MDAE9</ClassTitle>
-                    <DateTimeColumn>
-                        <DateStyle>20/05/2023</DateStyle>
-                        <TimeStyle>18:00 - 19:00</TimeStyle>
-                    </DateTimeColumn>
-                </ClassesDiv>
-                <ClassesDiv>
-                    <ClassTitle>POOE6</ClassTitle>
-                    <DateTimeColumn>
-                        <DateStyle>20/05/2023</DateStyle>
-                        <TimeStyle>20:00 - 21:00</TimeStyle>
-                    </DateTimeColumn>
-                </ClassesDiv>
-                <NextCLassesTitle>Últimos acessos</NextCLassesTitle>
-                <ClassesDiv>
-                    <ClassTitle>PPJE6</ClassTitle>
-                    <DateTimeColumn>
-                        <DateStyle>20/05/2023</DateStyle>
-                        <TimeStyle>16:00 - 17:15</TimeStyle>
-                    </DateTimeColumn>
-                </ClassesDiv>
-                <ClassesDiv>
-                    <ClassTitle>MDAE9</ClassTitle>
-                    <DateTimeColumn>
-                        <DateStyle>20/05/2023</DateStyle>
-                        <TimeStyle>18:00 - 19:00</TimeStyle>
-                    </DateTimeColumn>
-                </ClassesDiv>
+                {
+                    classroom.lock != null && !classroom.lock.state && (
+                        <SecondRow>
+                            <InformationColumn>
+                                <ClassAtMoment>Aula No Momento</ClassAtMoment>
+                                <ClassName>ProjetoIntegrador ll</ClassName>
+                            </InformationColumn>
+                            <InformationColumn>
+                                <ClassAtMoment>Professor</ClassAtMoment>
+                                <ClassName>Helen De Freitas</ClassName>
+                            </InformationColumn>
+                        </SecondRow>
+                    )
+                }
+
+                <NextCLassesTitle>Últimos Acessos</NextCLassesTitle>
+                <LastAccess>
+                    {
+                        classroom.access.map((access) =>
+                        (
+                            <ClassesDiv key={access.id}>
+                                <ClassTitle>{access.user.name} - {access.accessType}</ClassTitle>
+                                <DateTimeColumn>
+                                    <DateStyle>{formatDateToDDMMYYYY(access.openTime)}</DateStyle>
+                                    <TimeStyle>{`${formatDateToHHMM(access.openTime)}h - ${formatDateToHHMM(access.openTime)}h`}</TimeStyle>
+                                </DateTimeColumn>
+                            </ClassesDiv>
+                        ))
+                    }
+                </LastAccess>
             </OverlayMenu>
         </Overlay>
     )

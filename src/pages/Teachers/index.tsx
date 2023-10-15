@@ -10,20 +10,15 @@ import { useTeacher } from "../../data/contexts";
 import { Teacher } from "../../data/models/teacher";
 import {
   AddTeacher,
-  ClassTitle,
-  ClassesDiv,
   ClassesDivTitle,
   ClassesEdit,
   ClassesLogo,
-  DateStyle,
-  DateTimeColumn,
   DisposeButton,
   EditButton,
   EmailStyle,
   EmailTitle,
   FirstRowOverlay,
   InformationColumn,
-  NextCLassesTitle,
   Overlay,
   OverlayMenu,
   OverlayTitle,
@@ -31,7 +26,6 @@ import {
   TeacherContainer,
   TeacherHeader,
   TeacherTitle,
-  TimeStyle,
   WrapButton,
   WrapClassesLogo,
   WrapDetailsButton
@@ -43,7 +37,7 @@ export default function Teachers() {
   const [dialogDeleteOpen, setDialogDelete] = useState(false);
   const [indexDeleteSelected, setIndexDeleteSelected] = useState<number | null>(null);
   const [teacherSelected, setTeacherSelected] = useState<Teacher | null>(null);
-  const { loading, loadingNewTeacher, teachers, getAllTeachers, createNewTeacher, deleteTeacher } = useTeacher()
+  const { loading, loadingNewTeacher, teachers, createNewTeacher, deleteTeacher } = useTeacher()
 
   const initialFormData = {
     name: '',
@@ -183,7 +177,7 @@ export default function Teachers() {
               <FirstRowOverlay>
                 <OverlayTitle>{teacherSelected?.name}</OverlayTitle>
                 <WrapDetailsButton>
-                  <EditButton> <GoPencil size={34} /> </EditButton>
+                  <EditButton> <GoPencil size={24} /> </EditButton>
                   <DisposeButton onClick={handleDispose}>
                     <AiOutlineCloseCircle size={34} />
                   </DisposeButton>
@@ -203,7 +197,7 @@ export default function Teachers() {
                   }
                 </WrapClassesLogo>
               </InformationColumn>
-              <NextCLassesTitle>Próximas aulas</NextCLassesTitle>
+              {/* <NextCLassesTitle>Próximas aulas</NextCLassesTitle>
               <ClassesDiv>
                 <ClassTitle>PPJE6</ClassTitle>
                 <DateTimeColumn>
@@ -224,7 +218,7 @@ export default function Teachers() {
                   <DateStyle>20/05/2023</DateStyle>
                   <TimeStyle>16:00 - 17:15</TimeStyle>
                 </DateTimeColumn>
-              </ClassesDiv>
+              </ClassesDiv> */}
             </OverlayMenu>
           </Overlay>
         )}
