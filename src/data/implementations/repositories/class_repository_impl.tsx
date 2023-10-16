@@ -14,6 +14,16 @@ class ClassRepositoryImpl implements ClassRepository {
         this.api = provider;
     }
 
+    async deleteClass(idClass: string): Promise<void> {
+        try {
+            await this.api.remove(`/class/${idClass}`
+            );
+        } catch (error) {
+            console.error(`Erro ao deletar uma aula: `, error);
+            throw error;
+        }
+    }
+
     async createClass(props: CreateClassProps): Promise<void> {
         try {
             await this.api.post(`/class`,

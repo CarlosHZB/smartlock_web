@@ -18,6 +18,7 @@ export interface CreateClassProps {
 interface ClassRepository {
     getAllClasses(): Promise<Class[]>,
     createClass(props: CreateClassProps): Promise<void>
+    deleteClass(idClass: string): Promise<void>
 }
 
 export default ClassRepository;

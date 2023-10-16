@@ -18,6 +18,7 @@ interface ClassContextType {
     classes: Class[];
     getAllClasses(): Promise<void>;
     createNewClass(props: CreateClassProps): Promise<void>;
+    deleteClass(index: number, idClass: string): Promise<void>;
 }
 
 const ClassContext = createContext<ClassContextType | undefined>(undefined);
@@ -27,6 +28,13 @@ export const ClassProvider: React.FC<ClassContextProps> = ({ children }) => {
     const classRepository = new ClassRepositoryImpl(provider)
     const [loading, setLoading] = useState<boolean>(false)
     const [classes, setClasses] = useState<Class[]>([])
+
+    // Function to remove an item by index
+    const removeClass = (index: number) => {
+        const updatedItems = [...classes]; // Create a copy of the original list
+        updatedItems.splice(index, 1); // Remove the item at the specified index
+        setClasses(updatedItems); // Update the state with the modified list
+    };
 
     useEffect(() => {
         getAllClasses()
@@ -56,16 +64,26 @@ export const ClassProvider: React.FC<ClassContextProps> = ({ children }) => {
         }
     }
 
-return (
-    <ClassContext.Provider value={{
-        loading,
-        classes,
-        getAllClasses,
-        createNewClass
-    }}>
-        {children}
-    </ClassContext.Provider>
-);
+    async function deleteClass(index: number, idClass: string): Promise<void> {
+        try {
+            await classRepository.deleteClass(idClass);
+            removeClass(index)
+        } catch (error: any) {
+            throw error.response.data.message;
+        }
+    }
+
+    return (
+        <ClassContext.Provider value={{
+            loading,
+            classes,
+            getAllClasses,
+            createNewClass,
+            deleteClass
+        }}>
+            {children}
+        </ClassContext.Provider>
+    );
 };
 
 export const useClass = () => {
