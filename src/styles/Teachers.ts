@@ -111,6 +111,7 @@ export const ClassContent = styled.div`
     border-radius: 4px;
     color: white;
     font-size: 11px;
+    margin-bottom: 0.5rem;
 `
 
 export const TrashButton = styled.button`

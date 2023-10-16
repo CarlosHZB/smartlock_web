@@ -171,6 +171,7 @@ export const ClassesEdit = styled.input`
     border-radius: 5px;
     height: 35px;
     width: 90%;
+    font-family: 'Montserrat';
 `
 export const ClassesDivTitle = styled.h1`
     color: #263238;
@@ -188,6 +189,12 @@ export const TeacherSelect = styled.select`
   border-radius: 5px;
   background-color: #FFF;
   color: #2A5679;
+  border: none;
+
+  option {
+    border: none;
+    border-radius: 6px;
+  }
 `;
 
 export const TeacherOption = styled.option`
@@ -201,6 +208,7 @@ export const WrapButton = styled.div`
     align-items: center;
     justify-content: flex-end;
     width: 95%;
+    margin-top: 1rem;
 `
 
 export const SaveButton = styled.button`
@@ -342,3 +350,16 @@ export const TimeStyle = styled.h1`
     font-weight: 700;
     color: #2A567999;
 ` 
+
+export const ColumnDialogNewClass = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`
+
+export const RowDialogNewClass = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+`

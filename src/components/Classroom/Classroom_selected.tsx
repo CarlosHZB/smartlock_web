@@ -3,23 +3,19 @@ import { Classroom } from "../../data/models/classroom";
 import { formatDateToDDMMYYYY } from "../../helpers/date";
 import { formatDateToHHMM } from "../../helpers/time";
 import {
-    ClassAtMoment,
-    ClassName,
     ClassTitle,
     ClassesDiv,
     DateStyle,
     DateTimeColumn,
     DisposeButton,
     FirstRowOverlay,
-    InformationColumn,
     LastAccess,
     NextCLassesTitle,
     OpenOrClosedTag,
     Overlay,
     OverlayMenu,
     OverlayTitle,
-    SecondRow,
-    TimeStyle,
+    TimeStyle
 } from "../../styles/Rooms";
 
 interface ClassroomSelectedProps {
@@ -41,7 +37,7 @@ const ClassroomSelected: React.FC<ClassroomSelectedProps> = ({ handleDispose, cl
                     </OpenOrClosedTag>
                 </FirstRowOverlay>
                 <OverlayTitle>Sala {block}{classroom.name}</OverlayTitle>
-                {
+                {/* {
                     classroom.lock != null && !classroom.lock.state && (
                         <SecondRow>
                             <InformationColumn>
@@ -54,7 +50,7 @@ const ClassroomSelected: React.FC<ClassroomSelectedProps> = ({ handleDispose, cl
                             </InformationColumn>
                         </SecondRow>
                     )
-                }
+                } */}
 
                 <NextCLassesTitle>Últimos Acessos</NextCLassesTitle>
                 <LastAccess>
@@ -65,7 +61,7 @@ const ClassroomSelected: React.FC<ClassroomSelectedProps> = ({ handleDispose, cl
                                 <ClassTitle>{access.user.name} - {access.accessType}</ClassTitle>
                                 <DateTimeColumn>
                                     <DateStyle>{formatDateToDDMMYYYY(access.openTime)}</DateStyle>
-                                    <TimeStyle>{`${formatDateToHHMM(access.openTime)}h - ${formatDateToHHMM(access.openTime)}h`}</TimeStyle>
+                                    <TimeStyle>{`${formatDateToHHMM(access.openTime)}h - ${formatDateToHHMM(access.closeTime)}h`}</TimeStyle>
                                 </DateTimeColumn>
                             </ClassesDiv>
                         ))

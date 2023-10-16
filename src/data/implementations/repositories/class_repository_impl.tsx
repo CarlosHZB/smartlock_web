@@ -1,7 +1,9 @@
 // ClassRepository.ts
 
+import { formatStringToISOString, weekDayToNumber } from '../../../helpers/date';
+import { convertTimeToISOString } from '../../../helpers/time';
 import { Class, convertJsonToClass } from '../../models/class';
-import ClassRepository from '../../repositories/class_repository';
+import ClassRepository, { CreateClassProps } from '../../repositories/class_repository';
 import { ApiContextType } from '../../services/api_provider';
 
 
@@ -10,6 +12,27 @@ class ClassRepositoryImpl implements ClassRepository {
 
     constructor(provider: ApiContextType) {
         this.api = provider;
+    }
+
+    async createClass(props: CreateClassProps): Promise<void> {
+        try {
+            await this.api.post(`/class`,
+                {
+                    "name": props.name,
+                    "subject": props.subject,
+                    "dayOfTheWeek": weekDayToNumber(props.dayOfWeek),
+                    "initialDay": formatStringToISOString(props.initialDate),
+                    "endDay": formatStringToISOString(props.endDate),
+                    "initialTimeClass": convertTimeToISOString(props.initialTime),
+                    "endTimeClass": convertTimeToISOString(props.endTime),
+                    "teacherId": props.teacherId,
+                    "classroomId": props.classroomId
+                }
+            );
+        } catch (error) {
+            console.error(`Erro ao criar uma aula: `, error);
+            throw error;
+        }
     }
 
     async getAllClasses(): Promise<Class[]> {

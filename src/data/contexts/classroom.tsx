@@ -24,6 +24,7 @@ interface ClassroomContextType {
     getClassromRoomsByBlock(block: string): Promise<Classroom[]>;
     getAllClassrooms(): Promise<void>;
     updateClassroomState(classroomId: string, newLockState: boolean): void;
+    getClassroomsByBlock(blockName: String): Classroom[];
 }
 
 const ClassroomContext = createContext<ClassroomContextType | undefined>(undefined);
@@ -142,6 +143,9 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
         setBlocks(updatedBlocks);
     }
 
+    function getClassroomsByBlock(blockName: String): Classroom[] {
+        return blocks.filter((block) => block.name === blockName)[0].classrooms;
+    }
 
     return (
         <ClassroomContext.Provider value={{
@@ -150,7 +154,8 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
             blocks,
             getClassromRoomsByBlock,
             getAllClassrooms,
-            updateClassroomState
+            updateClassroomState,
+            getClassroomsByBlock
         }}>
             {children}
         </ClassroomContext.Provider>

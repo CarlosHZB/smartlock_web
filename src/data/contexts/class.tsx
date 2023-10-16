@@ -6,6 +6,7 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import ClassRepositoryImpl from '../implementations/repositories/class_repository_impl';
 import { Class } from '../models/class';
+import { CreateClassProps } from '../repositories/class_repository';
 import { useAPI } from '../services/api_provider';
 
 interface ClassContextProps {
@@ -16,6 +17,7 @@ interface ClassContextType {
     loading: boolean;
     classes: Class[];
     getAllClasses(): Promise<void>;
+    createNewClass(props: CreateClassProps): Promise<void>;
 }
 
 const ClassContext = createContext<ClassContextType | undefined>(undefined);
@@ -43,11 +45,23 @@ export const ClassProvider: React.FC<ClassContextProps> = ({ children }) => {
         }
     }
 
+    async function createNewClass(props: CreateClassProps): Promise<void> {
+        try {
+            setLoading(true)
+            await classRepository.createClass(props);
+        } catch (error: any) {
+            throw error.response.data.message;
+        } finally {
+            setLoading(false)
+        }
+    }
+
 return (
     <ClassContext.Provider value={{
         loading,
         classes,
         getAllClasses,
+        createNewClass
     }}>
         {children}
     </ClassContext.Provider>

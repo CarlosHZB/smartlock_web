@@ -55,6 +55,7 @@ export const TableHeader = styled.th`
 export const TableCell = styled.td`
   padding: 0.8rem 12px;
   border-bottom: 1px solid #ccc; /* Adiciona uma borda à célula */
+  gap: 0.5rem;
 
 `;
 

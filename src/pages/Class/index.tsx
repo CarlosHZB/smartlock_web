@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import ClassDetails from "../../components/Class/ClassDetails";
-import NewClassDialog from "../../components/Class/NewClassDialog";
+import { NewClassDialog } from "../../components/Class/NewClassDialog";
 import { TableClasses } from "../../components/Class/TableClasses";
 import { DeleteClassDialog } from "../../components/Dialogs/DeleteClassDialog";
 import { useClass } from "../../data/contexts/class";
@@ -22,14 +22,6 @@ export default function Classes() {
     const [classSelected, setClassSelected] = useState<Class | null>(null);
     const { loading, classes } = useClass()
 
-    const initialFormData = {
-        name: '',
-        email: '',
-        prontuario: ''
-    };
-
-    const [formData, setFormData] = useState(initialFormData);
-
 
     const handleClick = () => {
         setAddOpt(true);
@@ -45,33 +37,8 @@ export default function Classes() {
     const handleDispose = () => {
         setAddOpt(false);
         setDetailsOpt(false);
-        setFormData(initialFormData);
     };
 
-    const handleInputChange = (event: { target: { name: any; value: any; }; }) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleSaveTeacher = async (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-
-        // toast.promise(createNewTeacher(formData.name, formData.email, formData.prontuario), {
-        //     loading: 'Adicionando...',
-        //     success: (_) => {
-        //         setAddOpt(false);
-        //         setDetailsOpt(false);
-        //         setFormData(initialFormData);
-        //         return `O professor ${formData.name} foi adicionado`;
-        //     },
-        //     error: (_) => {
-        //         return `Ocorreu um erro ao adicionar o professor ${formData.name}`;
-        //     },
-        // });
-    };
 
     const handleDeleteTeacher = async (index: number) => {
 
@@ -113,7 +80,7 @@ export default function Classes() {
                 />
 
                 {addOpt && (
-                    <NewClassDialog />
+                    <NewClassDialog handleDispose={handleDispose} />
                 )}
 
                 {(detailsOpt && classSelected) && (
