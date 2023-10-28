@@ -164,17 +164,6 @@ export const NewClassDialog: React.FC<NewClassDialogProps> = ({
                 </RowDialogNewClass>
                 <RowDialogNewClass>
                     <ColumnDialogNewClass>
-                        <ClassesDivTitle>Dia da Semana</ClassesDivTitle>
-                        <TeacherSelect onChange={handleWeekDayChange} value={weekDay}>
-                            <TeacherOption>Dia da Semana</TeacherOption>
-                            {
-                                daysOfWeek.map((day) => (
-                                    <TeacherOption value={day} >{day}</TeacherOption>
-                                ))
-                            }
-                        </TeacherSelect>
-                    </ColumnDialogNewClass>
-                    <ColumnDialogNewClass>
                         <ClassesDivTitle>Horário de Início</ClassesDivTitle>
                         <ClassesEdit
                             type="time"
@@ -193,6 +182,17 @@ export const NewClassDialog: React.FC<NewClassDialogProps> = ({
                         />
                     </ColumnDialogNewClass>
                 </RowDialogNewClass>
+                <ColumnDialogNewClass>
+                    <ClassesDivTitle>Dia da Semana</ClassesDivTitle>
+                    <TeacherSelect onChange={handleWeekDayChange} value={weekDay}>
+                        <TeacherOption>Dia da Semana</TeacherOption>
+                        {
+                            daysOfWeek.map((day) => (
+                                <TeacherOption value={day} >{day}</TeacherOption>
+                            ))
+                        }
+                    </TeacherSelect>
+                </ColumnDialogNewClass>
                 <ClassesDivTitle>Professor</ClassesDivTitle>
                 <TeacherSelect onChange={handleTeacherChange} value={selectedTeacher}>
                     <TeacherOption >Selecione um professor</TeacherOption>

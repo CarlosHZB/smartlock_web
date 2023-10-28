@@ -190,6 +190,7 @@ export const TeacherSelect = styled.select`
   background-color: #FFF;
   color: #2A5679;
   border: none;
+  width: 95%;
 
   option {
     border: none;
@@ -355,11 +356,13 @@ export const ColumnDialogNewClass = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 42%;
 `
 
 export const RowDialogNewClass = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
     gap: 1.5rem;
 `
