@@ -30,7 +30,7 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
             <DrawerButtons onClick={() => handleButtonClick(3)} className={selectedTab === 3 ? "active" : ""}>
                 <MdOutlineBook size={22} /> Aulas
             </DrawerButtons>
-            <DrawerButtons onClick={() => {}} className={selectedTab === 4 ? "active" : ""}>
+            <DrawerButtons onClick={() => handleButtonClick(4)} className={selectedTab === 4 ? "active" : ""}>
                 <RiDoorLockLine size={22} /> Fechaduras
             </DrawerButtons>
             <DrawerButtons onClick={() => {}} className={selectedTab === 5 ? "active" : ""} style={{opacity: '15%'}} >
