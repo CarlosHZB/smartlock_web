@@ -80,7 +80,9 @@ export default function Rooms() {
                 {block.classrooms.map((sala) => (
                   <RoomsSquares
                     key={sala.id}
-                    state={sala.lock != null ? sala.lock?.state : null}
+                    state={sala.lock != null ? sala.lock?.state : null }
+
+                    
                     onClick={() => handleClick(sala)}
                   >
                     {sala.name}
