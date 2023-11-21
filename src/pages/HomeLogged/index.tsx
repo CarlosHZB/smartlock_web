@@ -5,6 +5,7 @@ import Drawer from "../../components/Drawer/Drawer";
 import {
   HomeLoggedContainer
 } from "../../styles/HomeLogged";
+import Alerts from "../Alerts";
 import Classes from "../Class";
 import Locks from "../Locks";
 import Rooms from "../Rooms";
@@ -25,6 +26,7 @@ export default function HomeLogged() {
     <Teachers />,
     <Classes />,
     <Locks />,
+    <Alerts />,
     <Students />,
   ]
 

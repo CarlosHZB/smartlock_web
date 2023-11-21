@@ -1,4 +1,5 @@
 import React from 'react';
+import { AiOutlineAlert } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
@@ -33,7 +34,10 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
             <DrawerButtons onClick={() => handleButtonClick(4)} className={selectedTab === 4 ? "active" : ""}>
                 <RiDoorLockLine size={22} /> Fechaduras
             </DrawerButtons>
-            <DrawerButtons onClick={() => {}} className={selectedTab === 5 ? "active" : ""} style={{opacity: '15%'}} >
+            <DrawerButtons onClick={() => handleButtonClick(5)} className={selectedTab === 5 ? "active" : ""}>
+                <AiOutlineAlert size={22} /> Alertas
+            </DrawerButtons>
+            <DrawerButtons onClick={() => {}} className={selectedTab === 6 ? "active" : ""} style={{opacity: '15%'}} >
                 <PiStudentBold size={22} /> Alunos
             </DrawerButtons>
             <LogoutButton onClick={logout} >
