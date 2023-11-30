@@ -129,20 +129,21 @@ interface RoomSquareProps {
 }
 
 export const RoomsSquares = styled.button<RoomSquareProps>`
-   display: flex;
-   margin-left: 1.2rem;
-   background-color: ${(props) => props.state != null ? props.state ? "#EF835F" : "#42BC37" : "#797979"};
-   height: 38px;
-   width: 38px;
-   border-radius: 5px;
-   border: none;
-   color: white;
-   align-items: center;
-   justify-content: center;
-   font-family: 'Montserrat';
-   font-size: 12px;
-   font-weight: 700;
-   cursor: pointer;
+    display: flex;
+    margin-left: 1.2rem;
+    background-color: ${(props) => props.state != null ? props.state ? "#EF835F" : "#42BC37" : "#797979"};
+    height: 38px;
+    width: 38px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 `
 
 export const Overlay = styled.div`
