@@ -104,6 +104,7 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
                             createdAt: payload.new.created_at || '',
                         });
 
+                        
                         setAlerts(prevAlerts => [...prevAlerts, alert]);
                         toast.error(`Alerta na sala ${classroom.block}${classroom.name}! ${alert.message}`);
                         

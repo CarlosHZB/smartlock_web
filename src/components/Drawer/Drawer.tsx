@@ -49,6 +49,7 @@ const Drawer: React.FC<DrawerProps> = ({ selectedTab, handleButtonClick }) => {
                     <p className='name-drawer'>{user?.name}</p>
                     <p className='code-drawer'>{user?.code}</p>
                 </UserInfo>
+                <p>v.2.2.3</p>
             </UserInfoContainer>
         </LeftDrawer>
     );

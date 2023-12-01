@@ -85,9 +85,11 @@ export const UserInfoContainer = styled.div`
     flex-direction: row;
     display: flex;
     margin-left: 1.8rem;
+    margin-right: 0.5rem;
     align-items: center;
     color: white;
     margin-bottom: 1rem;
+    justify-content: space-between;
 `
 
 export const UserInfo = styled.div`

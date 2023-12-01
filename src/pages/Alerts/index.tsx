@@ -10,6 +10,7 @@ export default function Alerts() {
 
     const { alerts } = useAlerts();
 
+
     return (
         <TeacherContainer>
             <TeacherHeader>
