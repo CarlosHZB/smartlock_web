@@ -1,7 +1,4 @@
-
-
-
-// ClassroomContext.ts
+// AlertsProvider.tsx
 
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
@@ -28,82 +25,44 @@ const AlertsContext = createContext<AlertsContextType | undefined>(undefined);
 
 export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
     const provider = useAPI();
-
     const { blocks } = useClassroom();
 
-    const alertsRepository = new AlertsRepositoryImpl(provider)
-    const [loading, setLoading] = useState<boolean>(false)
-    const [alerts, setAlerts] = useState<Alerts[]>([])
+    const alertsRepository = new AlertsRepositoryImpl(provider);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [alerts, setAlerts] = useState<Alerts[]>([]);
     const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
-    var alertsVar: Alerts[] = []
+
+    const addNewAlert = (newAlert: Alerts) => {
+        setAlerts(prevAlerts => [...prevAlerts, newAlert]);
+    };
 
     useEffect(() => {
-        getAllAlerts()
-    }, []);
-
-    useEffect(() => {
-        // Função para iniciar a assinatura
-        const startSubscription = async () => {
-            const newSubscription = supabase
-                .channel('alerts-inserts')
-                .on(
-                    'postgres_changes',
-                    {
-                        event: 'INSERT',
-                        schema: 'public',
-                        table: 'Alerts',
-                    },
-                    (payload: any) => {
-                        const classroom = findClassroomById(payload.new.classroom_id);
-                        if (classroom) {
-                            const alert = new Alerts({
-                                id: payload.new.id,
-                                message: payload.new.message,
-                                classroom: classroom,
-                                createdAt: payload.new.created_at,
-                            });
-                            alertsVar.push(alert)
-                            setAlerts(alertsVar)
-
-                            toast.error(`Alerta na sala ${classroom.block}${classroom.name}! ${alert.message}`)
-                        }
-                    }
-                )
-                .subscribe();
-
-            setSubscription(newSubscription);
-        };
-
+        getAllAlerts();
         startSubscription();
-
-        // Função de limpeza para desconectar a assinatura quando o componente for desmontado
-        return () => {
-            if (subscription) {
-                subscription.unsubscribe();
-            }
-        };
     }, []);
 
+    useEffect(() => {
+        // Este trecho de código será executado sempre que 'alerts' for alterado
+        // Adicione aqui a lógica para atualizar a interface do usuário, se necessário
+    }, [alerts]);
 
     async function getAlerts(): Promise<Alerts[]> {
         try {
             const alerts = await alertsRepository.getAllAlerts();
-            return alerts
+            return alerts;
         } catch (error) {
-            throw error
+            throw error;
         }
-    };
+    }
 
     async function getAllAlerts(): Promise<void> {
         try {
-            setLoading(true)
+            setLoading(true);
             const alerts = await getAlerts();
-            console.log(alerts)
-            alertsVar = alerts
-            setAlerts(alerts)
-            setLoading(false)
+            setAlerts(alerts);
+            setLoading(false);
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
             throw error;
         }
     }
@@ -125,13 +84,46 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
         return classroomF;
     }
 
+    const startSubscription = async () => {
+        const newSubscription = supabase
+            .channel('alerts-inserts')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'Alerts',
+                },
+                (payload: any) => {
+                    const classroom = findClassroomById(payload.new.classroom_id);
+                    if (classroom) {
+                        const alert = new Alerts({
+                            id: payload.new.id || '',
+                            message: payload.new.message || '',
+                            classroom: classroom || '',
+                            createdAt: payload.new.created_at || '',
+                        });
+
+                        setAlerts(prevAlerts => [...prevAlerts, alert]);
+                        toast.error(`Alerta na sala ${classroom.block}${classroom.name}! ${alert.message}`);
+                        
+                    }
+                }
+                )
+                .subscribe();
+
+        setSubscription(newSubscription);
+    };
+
     return (
-        <AlertsContext.Provider value={{
-            loading,
-            alertsRepository,
-            alerts,
-            getAllAlerts,
-        }}>
+        <AlertsContext.Provider
+            value={{
+                loading,
+                alertsRepository,
+                alerts,
+                getAllAlerts,
+            }}
+        >
             {children}
         </AlertsContext.Provider>
     );
