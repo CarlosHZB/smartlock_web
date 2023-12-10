@@ -1,5 +1,6 @@
+import { IoAlertCircleOutline } from "react-icons/io5";
 import { useAlerts } from "../../data/contexts/alerts";
-import { AlertCard, AlertMessage, AlertsContainer } from "../../styles/Alerts";
+import { AlertCard, AlertHeader, AlertMessage, AlertsContainer } from "../../styles/Alerts";
 import {
     TeacherContainer,
     TeacherHeader,
@@ -19,7 +20,10 @@ export default function Alerts() {
             <AlertsContainer>
                 {alerts.map((alert) => (
                     <AlertCard key={alert.id}>
-                        <p>Alerta</p>
+                        <AlertHeader>
+                            <IoAlertCircleOutline style={{color: '#EF835F'}}/>
+                            <p>Alerta</p>
+                        </AlertHeader>
                         <AlertMessage>{alert.message}</AlertMessage>
                         <p>Sala: {alert.classroom.block}{alert.classroom.name}</p>
                     </AlertCard>

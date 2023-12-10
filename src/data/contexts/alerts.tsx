@@ -95,6 +95,8 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
                     table: 'Alerts',
                 },
                 (payload: any) => {
+                    console.log('PAYLOAD')
+                    console.log(payload)
                     const classroom = findClassroomById(payload.new.classroom_id);
                     if (classroom) {
                         const alert = new Alerts({
@@ -108,6 +110,8 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
                         setAlerts(prevAlerts => [...prevAlerts, alert]);
                         toast.error(`Alerta na sala ${classroom.block}${classroom.name}! ${alert.message}`);
                         
+                    } else {
+                        console.log('Não foi possível encontrar a sala');
                     }
                 }
                 )

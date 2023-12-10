@@ -21,17 +21,14 @@ export const AlertsContainer = styled.div`
     &::-webkit-scrollbar-thumb {
         background-color: transparent; /* Cor da barra de rolagem */
     }
-    
-    p {
-    }
-
 `
 
 export const AlertMessage = styled.p`
     font-size: 1.5rem;
     font-weight: 600;
     margin-top: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
+    margin-right: 1rem;
 `
 
 export const AlertCard = styled.div`
@@ -39,7 +36,21 @@ export const AlertCard = styled.div`
     flex-direction: column;
     width: 60%;
     border-radius: 12px;
-    padding: 8px 12px;
+    padding: 8px 8px;
     background-color: #2A5679;
     color: #FFFFFF;
+`
+export const AlertHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+
+    p {
+        margin: 0px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #EF835F;
+    }
 `
