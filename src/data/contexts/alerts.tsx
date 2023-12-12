@@ -25,26 +25,18 @@ const AlertsContext = createContext<AlertsContextType | undefined>(undefined);
 
 export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
     const provider = useAPI();
-    const { blocks } = useClassroom();
+    const { getBlocks } = useClassroom();
 
     const alertsRepository = new AlertsRepositoryImpl(provider);
     const [loading, setLoading] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<Alerts[]>([]);
     const [subscription, setSubscription] = useState<RealtimeChannel | null>(null);
 
-    const addNewAlert = (newAlert: Alerts) => {
-        setAlerts(prevAlerts => [...prevAlerts, newAlert]);
-    };
 
     useEffect(() => {
         getAllAlerts();
         startSubscription();
     }, []);
-
-    useEffect(() => {
-        // Este trecho de código será executado sempre que 'alerts' for alterado
-        // Adicione aqui a lógica para atualizar a interface do usuário, se necessário
-    }, [alerts]);
 
     async function getAlerts(): Promise<Alerts[]> {
         try {
@@ -69,6 +61,8 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
 
     function findClassroomById(classroomId: string): Classroom | undefined {
         let classroomF: Classroom | undefined;
+
+        const blocks = getBlocks();
 
         for (const block of blocks) {
             const foundClassroom = block.classrooms.find((classroom) => {
@@ -98,6 +92,8 @@ export const AlertsProvider: React.FC<AlertsContextProps> = ({ children }) => {
                     console.log('PAYLOAD')
                     console.log(payload)
                     const classroom = findClassroomById(payload.new.classroom_id);
+                    console.log('CLASSROOM')
+                    console.log(classroom)
                     if (classroom) {
                         const alert = new Alerts({
                             id: payload.new.id || '',

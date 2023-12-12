@@ -21,6 +21,7 @@ interface ClassroomContextType {
     classroomRepository: ClassroomRepository;
     loading: boolean;
     blocks: Block[];
+    getBlocks(): Block[];
     getClassromRoomsByBlock(block: string): Promise<Classroom[]>;
     getAllClassrooms(): Promise<void>;
     updateClassroomState(classroomId: string, newLockState: boolean): void;
@@ -73,6 +74,9 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
         };
     }, []);
 
+    function getBlocks(): Block[] {
+        return blocksVar;
+    }
 
     async function getClassromRoomsByBlock(block: string): Promise<Classroom[]> {
         try {
@@ -152,6 +156,7 @@ export const ClassroomProvider: React.FC<ClassroomContextProps> = ({ children })
             loading,
             classroomRepository,
             blocks,
+            getBlocks,
             getClassromRoomsByBlock,
             getAllClassrooms,
             updateClassroomState,
